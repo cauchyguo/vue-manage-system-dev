@@ -1,3 +1,4 @@
+
 <template>
     <div class="tags" v-if="showTags">
         <ul>

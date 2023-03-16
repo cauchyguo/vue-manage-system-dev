@@ -1,5 +1,6 @@
 module.exports = {
     publicPath: './',
+    // publicPath: process.env.VUE_APP_BASE_URL,
     assetsDir: 'static',
     productionSourceMap: false,
     // devServer: {

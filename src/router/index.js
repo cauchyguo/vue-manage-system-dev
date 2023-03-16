@@ -4,6 +4,8 @@ import Router from 'vue-router';
 Vue.use(Router);
 
 export default new Router({
+    // mode: 'history',
+    // base: '/admin/',
     routes: [
         {
             path: '/',
@@ -38,6 +40,11 @@ export default new Router({
                     path: '/form',
                     component: () => import(/* webpackChunkName: "form" */ '../components/page/BaseForm.vue'),
                     meta: { title: '基本表单' }
+                },
+                {
+                    path: '/changeinfo',
+                    component: () => import(/* webpackChunkName: "form" */ '../components/page/BaseInfo.vue'),
+                    meta: { title: '基本信息' }
                 },
                 {
                     // 富文本编辑器组件
