@@ -57,7 +57,7 @@ export default {
                     admin_user_data.append('password',this.param.password)
                     // let admin_user = {admin_name:this.param.username,password:this.param.password }
                     // console.log(this.param.username)
-                    console.log(request.post)
+                    // console.log(request.post)
                     // console.log(admin_user)
                     axios.post('/login',admin_user_data).then(
                         res => {

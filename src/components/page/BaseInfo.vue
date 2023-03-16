@@ -48,6 +48,7 @@
 
 <script>
 import VueCropper  from 'vue-cropperjs';
+import axios from "axios";
 // import {validate} from "@vue/cli-service/lib/options";
 // import request from "@/utils/request";
 export default {
@@ -76,6 +77,40 @@ export default {
     // },
     methods: {
         onSubmit() {
+            this.$refs.form.validate(valid =>{
+                if (valid) {
+                    if (this.form.password1 === this.form.password2) {
+                        console.log("修改信息初始验证成功");
+                        let newinfo_data = new FormData();
+                        newinfo_data.append('admin_name', this.form.admin_name);
+                        newinfo_data.append('password', this.form.password1);
+                        newinfo_data.append('email', this.form.email);
+                        axios.post('/changeinfo', newinfo_data).then(
+                            res => {
+                                console.log(res);
+                                if (res.status === 200) {
+                                    this.$message.success('修改成功');
+                                    console.log('修改信息成功');
+                                    localStorage.setItem('ms_username', this.form.admin_name);
+                                    this.$router.push('/');
+                                }
+                            }
+                        ).catch(err => {
+                            this.$message.error('网络请求失败');
+                        })
+
+                    } else {
+                        console.log("密码不一致！")
+                        this.$message.warning('密码不一致！');
+                    }
+                } else {
+                    this.$message.warning("请输入正确的数据");
+                    console.log('修改失败');
+                    return false;
+                }
+
+
+            })
 
         }
     }
