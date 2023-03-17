@@ -42,7 +42,7 @@ export default new Router({
                     meta: { title: '基本表单' }
                 },
                 {
-                    path: '/changeinfo',
+                    path: '/setting',
                     component: () => import(/* webpackChunkName: "form" */ '../components/page/BaseInfo.vue'),
                     meta: { title: '基本信息' }
                 },

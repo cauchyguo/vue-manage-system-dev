@@ -6,10 +6,11 @@ module.exports = {
     // devServer: {
     //     proxy: {
     //         '/api':{
-    //             target:'http://jsonplaceholder.typicode.com',
+    //             target:'http://10.6.205.45:5000',
     //             changeOrigin:true,
+    //             ws: true,
     //             pathRewrite:{
-    //                 '/api':''
+    //                 '^/api':''
     //             }
     //         }
     //     }

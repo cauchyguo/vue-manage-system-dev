@@ -21,8 +21,9 @@ const i18n = new VueI18n({
     messages
 });
 
-// axios.defaults.baseURL = 'http://127.0.0.1:5000'
-axios.defaults.baseURL = 'http://127.0.0.1:5000/admin'
+axios.defaults.baseURL = 'http://127.0.0.1:5000'
+// axios.defaults.baseURL = '/api'
+
 
 //使用钩子函数对路由进行权限跳转
 router.beforeEach((to, from, next) => {

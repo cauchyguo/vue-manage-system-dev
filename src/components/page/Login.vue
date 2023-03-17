@@ -59,10 +59,10 @@ export default {
                     // console.log(this.param.username)
                     // console.log(request.post)
                     // console.log(admin_user)
-                    axios.post('/login',admin_user_data).then(
+                    axios.post('/admin/login',admin_user_data).then(
                         res => {
                             console.log(res)
-                            if (res.status===200){
+                            if (res.data.code===200){
                                 this.$message.success('登录成功');
                                 console.log("成功")
                                 localStorage.setItem('ms_username', this.param.username);

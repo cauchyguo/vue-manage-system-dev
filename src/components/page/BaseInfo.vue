@@ -84,11 +84,16 @@ export default {
                         let newinfo_data = new FormData();
                         newinfo_data.append('admin_name', this.form.admin_name);
                         newinfo_data.append('password', this.form.password1);
+                        newinfo_data.append('repeat_password', this.form.password2);
                         newinfo_data.append('email', this.form.email);
-                        axios.post('/changeinfo', newinfo_data).then(
+                        console.log(newinfo_data);
+                        console.log(this.form.admin_name);
+                        console.log(this.form.password1);
+                        console.log(this.form.email);
+                        axios.post('/admin/setting', newinfo_data).then(
                             res => {
                                 console.log(res);
-                                if (res.status === 200) {
+                                if (res.data.code === 200) {
                                     this.$message.success('修改成功');
                                     console.log('修改信息成功');
                                     localStorage.setItem('ms_username', this.form.admin_name);

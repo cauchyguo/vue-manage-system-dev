@@ -42,6 +42,7 @@
                             <el-dropdown-item>项目仓库</el-dropdown-item>
                         </a>
                         <el-dropdown-item divided command="changeinfo">修改信息</el-dropdown-item>
+                        <el-dropdown-item divided command="changeinfo">修改头像</el-dropdown-item>
                         <el-dropdown-item divided command="loginout">退出登录</el-dropdown-item>
                     </el-dropdown-menu>
                 </el-dropdown>
@@ -51,6 +52,7 @@
 </template>
 <script>
 import bus from '../common/bus';
+import axios from "axios";
 export default {
     data() {
         return {
@@ -70,11 +72,27 @@ export default {
         // 用户名下拉菜单选择事件
         handleCommand(command) {
             if (command == 'loginout') {
-                localStorage.removeItem('ms_username');
-                this.$router.push('/login');
+
+                axios.get('/admin/logout').then(
+                    res => {
+                        console.log("准备登出");
+                        if (res.data.code === 200) {
+                            console.log("管理员登出成功");
+                            localStorage.removeItem('ms_username');
+                            this.$router.push('/login');
+                        } else {
+                            this.$message.warning('登出错误');
+                            console.log("登出失败");
+                        }
+                    }
+                ).catch(err => {
+                    this.message.error('网络请求失败');
+                    console.log("网络请求失败");
+                })
+
             }
             if (command == 'changeinfo') {
-              this.$router.push('/changeinfo');
+              this.$router.push('/setting');
             }
 
         },
