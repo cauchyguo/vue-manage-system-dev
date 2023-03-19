@@ -2,7 +2,7 @@
     <div>
         <el-row :gutter="20">
             <el-col :span="8">
-                <el-card shadow="hover" class="mgb20" style="height:252px;">
+                <el-card shadow="hover" class="mgb20" style="height:200px;">
                     <div class="user-info">
                         <img src="../../assets/img/img.jpg" class="user-avator" alt />
                         <div class="user-info-cont">
@@ -19,15 +19,44 @@
                         <span>苏州</span>
                     </div>
                 </el-card>
-                <el-card shadow="hover" style="height:252px;">
-                    <div slot="header" class="clearfix">
-                        <span>语言详情</span>
-                    </div>Vue
-                    <el-progress :percentage="71.3" color="#42b983"></el-progress>JavaScript
-                    <el-progress :percentage="24.1" color="#f1e05a"></el-progress>CSS
-                    <el-progress :percentage="13.7"></el-progress>HTML
-                    <el-progress :percentage="5.9" color="#f56c6c"></el-progress>
-                </el-card>
+                <el-row :gutter="20">
+                    <el-col :span="8">
+                        <el-card shadow="hover" :body-style="{padding: '0px'}" class="box-card">
+                            <div>
+                                <div class="hot-words-title" slot="header">
+                                    <span>热门文本(Top5)</span>
+                                </div>
+                                <div v-for="(item,i) in top_words_list_today" class="text-item" >
+                                    {{i + 1}}  {{item}}
+                                </div>
+                            </div>
+                        </el-card>
+                    </el-col>
+                    <el-col :span="8">
+                        <el-card shadow="hover" :body-style="{padding: '0px'}"  class="box-card">
+                            <div>
+                                <div class="hot-words-title" slot="header">
+                                    <span>热门图片(Top5)</span>
+                                </div>
+                                <div v-for="(item,i) in top_picture_list_today" class="text-item" >
+                                    {{i + 1}}  {{item}}
+                                </div>
+                            </div>
+                        </el-card>
+                    </el-col>
+                    <el-col :span="8">
+                        <el-card shadow="hover" :body-style="{padding: '0px'}"  class="box-card">
+                            <div>
+                                <div class="hot-words-title" slot="header">
+                                    <span>热门语音(Top5)</span>
+                                </div>
+                                <div v-for="(item,i) in top_vocal_list_today" class="text-item" >
+                                    {{i + 1}}  {{item}}
+                                </div>
+                            </div>
+                        </el-card>
+                    </el-col>
+                </el-row>
             </el-col>
             <el-col :span="16">
                 <el-row :gutter="20" class="mgb20">
@@ -36,8 +65,9 @@
                             <div class="grid-content grid-con-1">
                                 <i class="el-icon-lx-people grid-con-icon"></i>
                                 <div class="grid-cont-right">
-                                    <div class="grid-num">1234</div>
-                                    <div>用户访问量</div>
+                                    <div class="grid-num1">今日用户: {{ user_today }}</div>
+                                    <div class="grid-num1">老用户: {{ old_user_today }}</div>
+                                    <div class="grid-num1">新用户: {{ new_user_today }}</div>
                                 </div>
                             </div>
                         </el-card>
@@ -47,8 +77,8 @@
                             <div class="grid-content grid-con-2">
                                 <i class="el-icon-lx-notice grid-con-icon"></i>
                                 <div class="grid-cont-right">
-                                    <div class="grid-num">321</div>
-                                    <div>系统消息</div>
+                                    <div>垃圾分类次数</div>
+                                    <div class="grid-num">{{ gb_classify_today }}</div>
                                 </div>
                             </div>
                         </el-card>
@@ -58,92 +88,63 @@
                             <div class="grid-content grid-con-3">
                                 <i class="el-icon-lx-goods grid-con-icon"></i>
                                 <div class="grid-cont-right">
-                                    <div class="grid-num">5000</div>
-                                    <div>数量</div>
+                                    <div>考试答题次数</div>
+                                    <div class="grid-num">{{ game_play_today }}</div>
                                 </div>
                             </div>
                         </el-card>
                     </el-col>
                 </el-row>
                 <el-card shadow="hover" style="height:403px;">
-                    <div slot="header" class="clearfix">
-                        <span>待办事项</span>
-                        <el-button style="float: right; padding: 3px 0" type="text">添加</el-button>
-                    </div>
-                    <el-table :show-header="false" :data="todoList" style="width:100%;">
-                        <el-table-column width="40">
-                            <template slot-scope="scope">
-                                <el-checkbox v-model="scope.row.status"></el-checkbox>
-                            </template>
-                        </el-table-column>
-                        <el-table-column>
-                            <template slot-scope="scope">
-                                <div
-                                    class="todo-item"
-                                    :class="{'todo-item-del': scope.row.status}"
-                                >{{scope.row.title}}</div>
-                            </template>
-                        </el-table-column>
-                        <el-table-column width="60">
-                            <template>
-                                <i class="el-icon-edit"></i>
-                                <i class="el-icon-delete"></i>
-                            </template>
-                        </el-table-column>
-                    </el-table>
+<!--                    <div slot="header" class="clearfix" align="center">-->
+<!--                        <span>最近在线人数</span>-->
+<!--&lt;!&ndash;                        <el-button style="float: right; padding: 3px 0" type="text">添加</el-button>&ndash;&gt;-->
+<!--                    </div>-->
+                    <el-card shadow="hover">
+                        <schart ref="line" class="schart" canvasId="line" :options="options2"></schart>
+                    </el-card>
                 </el-card>
             </el-col>
         </el-row>
-        <el-row :gutter="20">
-            <el-col :span="12">
-                <el-card shadow="hover">
-                    <schart ref="bar" class="schart" canvasId="bar" :options="options"></schart>
-                </el-card>
-            </el-col>
+<!--        <el-row :gutter="20">-->
+<!--            <el-col :span="12">-->
+<!--                <el-card shadow="hover">-->
+<!--                    <schart ref="bar" class="schart" canvasId="bar" :options="options"></schart>-->
+<!--                </el-card>-->
+<!--            </el-col>-->
 
-            <el-col :span="12">
-                <el-card shadow="hover">
-                    <schart ref="line" class="schart" canvasId="line" :options="options2"></schart>
-                </el-card>
-            </el-col>
-        </el-row>
+<!--            <el-col :span="12">-->
+<!--                <el-card shadow="hover">-->
+<!--                    <schart ref="line" class="schart" canvasId="line" :options="options2" ></schart>-->
+<!--                </el-card>-->
+<!--            </el-col>-->
+<!--        </el-row>-->
     </div>
 </template>
 
 <script>
 import Schart from 'vue-schart';
 import bus from '../common/bus';
+import axios from "axios";
 export default {
     name: 'dashboard',
+    created() {
+        this.getdata();
+    },
     data() {
         return {
             name: localStorage.getItem('ms_username'),
-            todoList: [
-                {
-                    title: '今天要修复100个bug',
-                    status: false
-                },
-                {
-                    title: '今天要修复100个bug',
-                    status: false
-                },
-                {
-                    title: '今天要写100行代码加几个bug吧',
-                    status: false
-                },
-                {
-                    title: '今天要修复100个bug',
-                    status: false
-                },
-                {
-                    title: '今天要修复100个bug',
-                    status: true
-                },
-                {
-                    title: '今天要写100行代码加几个bug吧',
-                    status: true
-                }
-            ],
+            user_today: 0,
+            new_user_today: 0,
+            old_user_today: 0,
+            gb_classify_today: 0,
+            game_play_today: 0,
+            top_words_list_today: [],
+            top_picture_list_today: [],
+            top_vocal_list_today: [],
+
+
+
             data: [
                 {
                     name: '2018/09/04',
@@ -199,21 +200,24 @@ export default {
             options2: {
                 type: 'line',
                 title: {
-                    text: '最近几个月各品类销售趋势图'
+                    text: '最近一周用户登录人数'
                 },
-                labels: ['6月', '7月', '8月', '9月', '10月'],
+                yEqual: 6,
+                labels: ['周一', '周二', '周三', '周四', '周五','周六','周日'],
                 datasets: [
                     {
-                        label: '家电',
-                        data: [234, 278, 270, 190, 230]
+                        label: '在线人数',
+                        data: [234, 278, 270, 190, 230,400,599]
                     },
                     {
-                        label: '百货',
-                        data: [164, 178, 150, 135, 160]
+                        label: '新用户人数',
+                        data: [164, 178, 150, 135, 160, 300, 259],
+
                     },
                     {
-                        label: '食品',
-                        data: [74, 118, 200, 235, 90]
+                        label: '老用户人数',
+                        data: [70, 100, 120, 55, 70, 100, 340],
+
                     }
                 ]
             }
@@ -227,18 +231,32 @@ export default {
             return this.name === 'admin' ? '超级管理员' : '普通用户';
         }
     },
-    // created() {
-    //     this.handleListener();
-    //     this.changeDate();
-    // },
-    // activated() {
-    //     this.handleListener();
-    // },
-    // deactivated() {
-    //     window.removeEventListener('resize', this.renderChart);
-    //     bus.$off('collapse', this.handleBus);
-    // },
     methods: {
+
+        async getdata() {
+            axios.get('/admin/index').then(
+                res => {
+                    console.log(res.data.data);
+                    this.obj = res.data.data;
+
+                    this.user_today = this.obj.user_today;
+                    this.new_user_today = this.obj.new_user_today;
+                    this.old_user_today = this.obj.old_user_today
+                    this.gb_classify_today = this.obj.gb_classify_today;
+                    this.game_play_today = this.obj.game_play_today;
+                    this.top_words_list_today= this.obj.top_info_today.top_words_list_today;
+                    this.top_picture_list_today= this.obj.top_info_today.top_picture_list_today;
+                    this.top_vocal_list_today= this.obj.top_info_today.top_vocal_list_today;
+
+
+                    // this.options2.datasets
+
+                }
+            ).catch(err =>{
+                this.$message.error('网络失败');
+
+            })
+        },
         changeDate() {
             const now = new Date().getTime();
             this.data.forEach((item, index) => {
@@ -246,20 +264,6 @@ export default {
                 item.name = `${date.getFullYear()}/${date.getMonth() + 1}/${date.getDate()}`;
             });
         }
-        // handleListener() {
-        //     bus.$on('collapse', this.handleBus);
-        //     // 调用renderChart方法对图表进行重新渲染
-        //     window.addEventListener('resize', this.renderChart);
-        // },
-        // handleBus(msg) {
-        //     setTimeout(() => {
-        //         this.renderChart();
-        //     }, 200);
-        // },
-        // renderChart() {
-        //     this.$refs.bar.renderChart();
-        //     this.$refs.line.renderChart();
-        // }
     }
 };
 </script>
@@ -268,6 +272,32 @@ export default {
 <style scoped>
 .el-row {
     margin-bottom: 20px;
+}
+.box-card {
+    display: flex;
+    align-content: center;
+    height: 300px;
+    /*display-inside: ;*/
+}
+
+.hot-words-title {
+    display: flex;
+    align-content: center;
+    padding: 8px;
+    font-size: 16px;
+    /*padding-left: 50px;*/
+    /*align-items: center;*/
+    /*padding-bottom: 10px;*/
+    border-bottom: 2px solid #ccc;
+    margin-bottom: 10px;
+
+}
+
+.text-item {
+    display: flex;
+    align-content: center;
+    padding: 10px;
+    /*border-bottom: 2px solid #ccc;*/
 }
 
 .grid-content {
@@ -281,6 +311,11 @@ export default {
     text-align: center;
     font-size: 14px;
     color: #999;
+}
+
+.grid-num1 {
+    font-size: 15px;
+    font-weight: bold;
 }
 
 .grid-num {
@@ -323,20 +358,21 @@ export default {
 
 .user-info {
     display: flex;
+    padding-left: 50px;
     align-items: center;
-    padding-bottom: 20px;
+    padding-bottom: 10px;
     border-bottom: 2px solid #ccc;
     margin-bottom: 20px;
 }
 
 .user-avator {
-    width: 120px;
-    height: 120px;
+    width: 90px;
+    height: 90px;
     border-radius: 50%;
 }
 
 .user-info-cont {
-    padding-left: 50px;
+    padding-left: 60px;
     flex: 1;
     font-size: 14px;
     color: #999;
@@ -348,17 +384,18 @@ export default {
 }
 
 .user-info-list {
+    padding-left: 50px;
     font-size: 14px;
     color: #999;
     line-height: 25px;
 }
 
 .user-info-list span {
-    margin-left: 70px;
+    margin-left: 45px;
 }
 
 .mgb20 {
-    margin-bottom: 20px;
+    margin-bottom: 10px;
 }
 
 .todo-item {

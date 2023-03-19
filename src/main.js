@@ -21,6 +21,7 @@ const i18n = new VueI18n({
     messages
 });
 
+// axios.defaults.headers['Content-Type'] = 'application/json;charset=utf-8'
 axios.defaults.baseURL = 'http://127.0.0.1:5000'
 // axios.defaults.baseURL = '/api'
 
