@@ -53,12 +53,11 @@ export default {
                     console.log("初始验证成功");
                     // const url = "http://127.0.0.1:5000/admin/login";
                     let admin_user_data = new FormData();
+                    this.param.password = md5(this.param.password);
+                    console.log(this.param.password);
                     admin_user_data.append('admin_name', this.param.username);
                     admin_user_data.append('password',this.param.password)
-                    // let admin_user = {admin_name:this.param.username,password:this.param.password }
-                    // console.log(this.param.username)
-                    // console.log(request.post)
-                    // console.log(admin_user)
+
                     axios.post('/admin/login',admin_user_data).then(
                         res => {
                             console.log(res)

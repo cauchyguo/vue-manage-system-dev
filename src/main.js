@@ -10,10 +10,11 @@ import './assets/css/icon.css';
 import './components/common/directives';
 import 'babel-polyfill';
 import axios from 'axios';
+import md5 from 'js-md5';
 import echarts from "echarts";
 
 Vue.prototype.$echarts = echarts;
-
+Vue.prototype.$md5 = md5;
 Vue.config.productionTip = false;
 Vue.use(VueI18n);
 Vue.use(ElementUI, {

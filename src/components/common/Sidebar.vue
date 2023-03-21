@@ -86,7 +86,7 @@ export default {
                             title: '模型参数'
                         },
                         {
-                            index: 'tabs',
+                            index: 'gbmanage',
                             title: '数据图片'
                         },
                         {

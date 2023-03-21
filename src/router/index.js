@@ -27,6 +27,11 @@ export default new Router({
                     meta: { title: '自定义图标' }
                 },
                 {
+                    path: '/gbmanage',
+                    component: () => import(/* webpackChunkName: "table" */ '../components/page/GbManage.vue'),
+                    meta: { title: '数据图片' }
+                },
+                {
                     path: '/table',
                     component: () => import(/* webpackChunkName: "table" */ '../components/page/BaseTable.vue'),
                     meta: { title: '基础表格' }

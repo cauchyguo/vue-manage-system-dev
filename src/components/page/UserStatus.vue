@@ -20,6 +20,16 @@
                 </el-col>
             </el-row>
         </div>
+        <div class="container">
+            <el-row :gutter="20">
+                <el-col :span="12">
+                    <div class="grid-content-bottom bg-purple" id="chart4" ></div>
+                </el-col>
+                <el-col :span="12">
+                    <div class="grid-content-bottom bg-purple" id="chart5" ></div>
+                </el-col>
+            </el-row>
+        </div>
     </div>
 </template>
 
@@ -51,6 +61,16 @@ export default {
             mychart3: "",
             option3: "",
 
+            // chart4
+            chartDom4: "",
+            mychart4: "",
+            option4: "",
+
+            // chart5
+            chartDom5: "",
+            mychart5: "",
+            option5: "",
+
         };
     },
     mounted() {
@@ -64,6 +84,13 @@ export default {
 
         this.chartDom3 = document.getElementById('chart3');
         this.mychart3 = echarts.init((this.chartDom3));
+
+        this.chartDom4 = document.getElementById('chart4');
+        this.mychart4 = echarts.init((this.chartDom4));
+
+        this.chartDom5 = document.getElementById('chart5');
+        this.mychart5 = echarts.init((this.chartDom5));
+        
         this.getData();
         // this.mychart1.
 
@@ -121,6 +148,12 @@ export default {
                 yAxis: {},
                 series: [
                     {
+                        label:{
+                            normal:{
+                                show: true,
+                                position: 'top',
+                            }
+                        },
                         type: 'bar',
                         data: Object.values(top_city_dict),
                     },
@@ -135,24 +168,117 @@ export default {
                     text: '用户年龄分布',
                     left: 'center',
                 },
+
+                legend:{
+                    left: "center",
+                    top: "bottom",
+                    data: ['男性', '女性'],
+                },
                 xAxis: {
                     data: ['0-20', '20-30', '30-40', '40-60', '>60']
                 },
-                yAxis: {},
+                yAxis: {
+                    name: '人数',
+                },
                 series: [
                     {
+                        name: '男性',
                         type: 'bar',
                         data: male_list,
+                        stack: 'x',
+                        label:{
+                            normal:{
+                                show: true,
+                                position: 'top',
+                            }
+                        },
                     },
 
                     {
+                        name: '女性',
                         type: 'bar',
                         data: female_list,
-                    }
+                        stack: 'x',
+                        label:{
+                            normal:{
+                                show: true,
+                                position: 'top',
+                            }
+                        },
+                    },
                 ]
             };
             this.option3 && this.mychart3.setOption(this.option3);
 
+        },
+        initChart4(user_login_by_week,user_game_by_week) {
+            this.option4 = {
+                title:{
+                    text: '用户上周使用情况',
+                    left: 'center',
+                },
+                legend:{
+                    left: "center",
+                    top: "bottom",
+                    data: ['用户使用人数', '答题人数'],
+                },
+                xAxis: {
+                    // type: 'value',
+                    data: ['周一', '周二', '周三', '周四', '周五','周六','周日'],
+                },
+                yAxis: {},
+                series: [
+                    {
+                        label:{
+                            normal:{
+                                show: true,
+                                position: 'top',
+                            }
+                        },
+                        name: '用户使用人数',
+                        type: 'line',
+                        data: user_login_by_week,
+                    },
+                    {
+                        label:{
+                            normal:{
+                                show: true,
+                                position: 'bottom',
+                            }
+                        },
+                        name: '答题人数',
+                        type: 'line',
+                        data: user_game_by_week,
+                    },
+                ]
+            };
+            this.option4 && this.mychart4.setOption(this.option4);
+        },
+        initChart5(top_city_dict) {
+            this.option5 = {
+                title:{
+                    text: '用户地区分布',
+                    left: 'center',
+                },
+                xAxis: {
+                    // type: 'value',
+                    data: Object.keys(top_city_dict),
+                },
+                yAxis: {},
+                series: [
+                    {
+                        label:{
+                            normal:{
+                                show: true,
+                                position: 'top',
+                            }
+                        },
+                        type: 'bar',
+                        data: Object.values(top_city_dict),
+                    },
+                ]
+            };
+            this.option5 && this.mychart5.setOption(this.option5);
         },
         handleClick(tab, event) {
             console.log(tab, event);
@@ -167,22 +293,19 @@ export default {
                     console.log(res.data.data);
                     console.log("请求数据成功");
                     this.obj = res.data.data;
-                    // console.log(this.population.datasets);
-                    console.log(this.obj.population.male_number)
-                    console.log(this.obj.population.female_number)
 
                     console.log(this.obj);
-                    console.log(this.obj.age_dist.male_age_dist);
-                    console.log(this.obj.age_dist.female_age_dist);
-                    this.initChart1(this.obj.population.male_number,this.obj.population.female_number);
+                    this.initChart1(this.obj.population.male_number, this.obj.population.female_number);
                     this.initChart2(this.obj.top_user_dist);
-                    this.initChart3(this.obj.age_dist.male_age_dist,this.obj.age_dist.female_age_dist);
+                    this.initChart3(this.obj.age_dist.male_age_dist, this.obj.age_dist.female_age_dist);
+                    this.initChart4(this.obj.user_login_by_week,this.obj.user_game_by_week);
+                    this.initChart5(this.obj.top_user_dist);
 
                 }
-            ).catch(err =>{
+            ).catch(err => {
                 this.$message.error('网络失败');
 
-            })
+            });
         },
     }
 };
@@ -200,4 +323,9 @@ export default {
     height: 300px;
     width: 400px;
 }
+.grid-content-bottom {
+    height: 400px;
+    width: 600px;
+}
+
 </style>
