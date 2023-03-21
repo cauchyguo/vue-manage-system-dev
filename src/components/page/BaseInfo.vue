@@ -44,7 +44,7 @@
                         <el-upload
                             ref="upload"
                             file-list="fileList"
-                            action="http://localhost:5000/admin/avatar/upload"
+                            action="http://10.6.12.11:5000/admin/avatar/upload"
                             :on-preview="handlePreview"
                             :on-remove="handleRemove"
                             class="upload-demo"

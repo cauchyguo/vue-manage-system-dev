@@ -2,149 +2,202 @@
     <div>
         <div class="crumbs">
             <el-breadcrumb separator="/">
-
                 <el-breadcrumb-item>
-                    <i class="el-icon-pie-chart"></i> schart图表
+                    <i class="el-icon-pie-chart"></i> 用户数据统计
                 </el-breadcrumb-item>
             </el-breadcrumb>
         </div>
         <div class="container">
-            <div class="plugins-tips">
-                vue-schart：vue.js封装sChart.js的图表组件。
-                访问地址：
-                <a
-                    href="https://github.com/lin-xin/vue-schart"
-                    target="_blank"
-                >vue-schart</a>
-            </div>
-            <div class="schart-box">
-                <div class="content-title">柱状图</div>
-                <schart class="schart" canvasId="bar" :options="options1"></schart>
-            </div>
-            <div class="schart-box">
-                <div class="content-title">折线图</div>
-                <schart class="schart" canvasId="line" :options="options2"></schart>
-            </div>
-            <div class="schart-box">
-                <div class="content-title">饼状图</div>
-                <schart class="schart" canvasId="pie" :options="options3"></schart>
-            </div>
-            <div class="schart-box">
-                <div class="content-title">环形图</div>
-                <schart class="schart" canvasId="ring" :options="options4"></schart>
-            </div>
+            <el-row :gutter="20">
+                <el-col :span="8">
+                    <div class="grid-content bg-purple" id="chart1" ></div>
+                </el-col>
+                <el-col :span="8">
+                    <div class="grid-content bg-purple" id="chart3" ></div>
+                </el-col>
+                <el-col :span="8">
+                    <div class="grid-content bg-purple" id="chart2" ></div>
+                </el-col>
+            </el-row>
         </div>
     </div>
 </template>
 
 <script>
 import Schart from 'vue-schart';
+import axios from "axios";
+import * as echarts from 'echarts';
+
 export default {
     name: 'basecharts',
-    components: {
-        Schart
+    created() {
+        console.log("用户vue页面创建中");
+        // this.getData();
     },
     data() {
         return {
-            options1: {
-                type: 'bar',
-                title: {
-                    text: '最近一周各品类销售图'
-                },
-                bgColor: '#fbfbfb',
-                labels: ['周一', '周二', '周三', '周四', '周五'],
-                datasets: [
-                    {
-                        label: '家电',
-                        fillColor: 'rgba(241, 49, 74, 0.5)',
-                        data: [234, 278, 270, 190, 230]
-                    },
-                    {
-                        label: '百货',
-                        data: [164, 178, 190, 135, 160]
-                    },
-                    {
-                        label: '食品',
-                        data: [144, 198, 150, 235, 120]
-                    }
-                ]
-            },
-            options2: {
-                type: 'line',
-                title: {
-                    text: '最近几个月各品类销售趋势图'
-                },
-                bgColor: '#fbfbfb',
-                labels: ['6月', '7月', '8月', '9月', '10月'],
-                datasets: [
-                    {
-                        label: '家电',
-                        data: [234, 278, 270, 190, 230]
-                    },
-                    {
-                        label: '百货',
-                        data: [164, 178, 150, 135, 160]
-                    },
-                    {
-                        label: '食品',
-                        data: [114, 138, 200, 235, 190]
-                    }
-                ]
-            },
-            options3: {
-                type: 'pie',
-                title: {
-                    text: '服装品类销售饼状图'
-                },
-                legend: {
-                    position: 'left'
-                },
-                bgColor: '#fbfbfb',
-                labels: ['T恤', '牛仔裤', '连衣裙', '毛衣', '七分裤', '短裙', '羽绒服'],
-                datasets: [
-                    {
-                        data: [334, 278, 190, 235, 260, 200, 141]
-                    }
-                ]
-            },
-            options4: {
-                type: 'ring',
-                title: {
-                    text: '环形三等分'
-                },
-                showValue: false,
-                legend: {
-                    position: 'bottom',
-                    bottom: 40
-                },
-                bgColor: '#fbfbfb',
-                labels: ['vue', 'react', 'angular'],
-                datasets: [
-                    {
-                        data: [500, 500, 500]
-                    }
-                ]
-            }
+            // chart1
+            chartDom1: "",
+            mychart1: "",
+            option1: "",
+
+            // chart2
+            chartDom2: "",
+            mychart2: "",
+            option2: "",
+
+            // chart3
+            chartDom3: "",
+            mychart3: "",
+            option3: "",
+
         };
+    },
+    mounted() {
+        console.log("开始挂载");
+
+        this.chartDom1 = document.getElementById('chart1');
+        this.mychart1 = echarts.init((this.chartDom1));
+
+        this.chartDom2 = document.getElementById('chart2');
+        this.mychart2 = echarts.init((this.chartDom2));
+
+        this.chartDom3 = document.getElementById('chart3');
+        this.mychart3 = echarts.init((this.chartDom3));
+        this.getData();
+        // this.mychart1.
+
+
+    },
+    methods:{
+        initChart1(male=80,female=500) {
+            this.option1 = {
+                title:{
+                    text: '用户性别比例',
+                    left: 'center',
+                },
+                legend:{
+                    left: "center",
+                    top: "bottom",
+                    data: ['男性', '女性'],
+                },
+                toolbox:{
+                    show: true,
+                },
+                series:[
+                    {
+                        name: "Area Mode",
+                        type: "pie",
+                        label:{
+                            show: true,
+
+                        },
+                        data:[
+                            {
+                                value:male,
+                                name: '男性',
+                            },
+                            {
+                                value: female,
+                                name: '女性',
+                            },
+                        ]
+                    },
+                ]
+            };
+            this.option1 && this.mychart1.setOption(this.option1);
+            // this.mychart1.resize();
+        },
+        initChart2(top_city_dict) {
+            this.option2 = {
+                title:{
+                    text: '用户地区分布',
+                    left: 'center',
+                },
+                xAxis: {
+                    // type: 'value',
+                    data: Object.keys(top_city_dict),
+                },
+                yAxis: {},
+                series: [
+                    {
+                        type: 'bar',
+                        data: Object.values(top_city_dict),
+                    },
+                ]
+            };
+            this.option2 && this.mychart2.setOption(this.option2);
+        },
+        // },
+        initChart3(male_list,female_list) {
+            this.option3 = {
+                title:{
+                    text: '用户年龄分布',
+                    left: 'center',
+                },
+                xAxis: {
+                    data: ['0-20', '20-30', '30-40', '40-60', '>60']
+                },
+                yAxis: {},
+                series: [
+                    {
+                        type: 'bar',
+                        data: male_list,
+                    },
+
+                    {
+                        type: 'bar',
+                        data: female_list,
+                    }
+                ]
+            };
+            this.option3 && this.mychart3.setOption(this.option3);
+
+        },
+        handleClick(tab, event) {
+            console.log(tab, event);
+            this.activeName = tab;
+        },
+
+        async getData() {
+            console.log("开始调用getData()");
+            axios.get('/admin/users').then(
+                res => {
+                    console.log("开始请求用户数据");
+                    console.log(res.data.data);
+                    console.log("请求数据成功");
+                    this.obj = res.data.data;
+                    // console.log(this.population.datasets);
+                    console.log(this.obj.population.male_number)
+                    console.log(this.obj.population.female_number)
+
+                    console.log(this.obj);
+                    console.log(this.obj.age_dist.male_age_dist);
+                    console.log(this.obj.age_dist.female_age_dist);
+                    this.initChart1(this.obj.population.male_number,this.obj.population.female_number);
+                    this.initChart2(this.obj.top_user_dist);
+                    this.initChart3(this.obj.age_dist.male_age_dist,this.obj.age_dist.female_age_dist);
+
+                }
+            ).catch(err =>{
+                this.$message.error('网络失败');
+
+            })
+        },
     }
 };
 </script>
 
 <style scoped>
-.schart-box {
-    display: inline-block;
-    margin: 20px;
+
+.container {
+    height: 100%;
+    width: 100%;
 }
-.schart {
-    width: 600px;
-    height: 400px;
-}
-.content-title {
-    clear: both;
-    font-weight: 400;
-    line-height: 50px;
-    margin: 10px 0;
-    font-size: 22px;
-    color: #1f2f3d;
+
+
+.grid-content {
+    height: 300px;
+    width: 400px;
 }
 </style>

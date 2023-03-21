@@ -96,13 +96,14 @@
                     </el-col>
                 </el-row>
                 <el-card shadow="hover" style="height:403px;">
+                    <schart ref="line" class="schart" canvasId="line" :options="options2"></schart>
 <!--                    <div slot="header" class="clearfix" align="center">-->
 <!--                        <span>最近在线人数</span>-->
 <!--&lt;!&ndash;                        <el-button style="float: right; padding: 3px 0" type="text">添加</el-button>&ndash;&gt;-->
 <!--                    </div>-->
-                    <el-card shadow="hover">
-                        <schart ref="line" class="schart" canvasId="line" :options="options2"></schart>
-                    </el-card>
+<!--                    <el-card shadow="hover">-->
+<!--                        <schart ref="line" class="schart" canvasId="line" :options="options2"></schart>-->
+<!--                    </el-card>-->
                 </el-card>
             </el-col>
         </el-row>
@@ -124,6 +125,7 @@
 
 <script>
 import Schart from 'vue-schart';
+
 import bus from '../common/bus';
 import axios from "axios";
 export default {
@@ -145,58 +147,58 @@ export default {
 
 
 
-            data: [
-                {
-                    name: '2018/09/04',
-                    value: 1083
-                },
-                {
-                    name: '2018/09/05',
-                    value: 941
-                },
-                {
-                    name: '2018/09/06',
-                    value: 1139
-                },
-                {
-                    name: '2018/09/07',
-                    value: 816
-                },
-                {
-                    name: '2018/09/08',
-                    value: 327
-                },
-                {
-                    name: '2018/09/09',
-                    value: 228
-                },
-                {
-                    name: '2018/09/10',
-                    value: 1065
-                }
-            ],
-            options: {
-                type: 'bar',
-                title: {
-                    text: '最近一周各品类销售图'
-                },
-                xRorate: 25,
-                labels: ['周一', '周二', '周三', '周四', '周五'],
-                datasets: [
-                    {
-                        label: '家电',
-                        data: [234, 278, 270, 190, 230]
-                    },
-                    {
-                        label: '百货',
-                        data: [164, 178, 190, 135, 160]
-                    },
-                    {
-                        label: '食品',
-                        data: [144, 198, 150, 235, 120]
-                    }
-                ]
-            },
+            // data: [
+            //     {
+            //         name: '2018/09/04',
+            //         value: 1083
+            //     },
+            //     {
+            //         name: '2018/09/05',
+            //         value: 941
+            //     },
+            //     {
+            //         name: '2018/09/06',
+            //         value: 1139
+            //     },
+            //     {
+            //         name: '2018/09/07',
+            //         value: 816
+            //     },
+            //     {
+            //         name: '2018/09/08',
+            //         value: 327
+            //     },
+            //     {
+            //         name: '2018/09/09',
+            //         value: 228
+            //     },
+            //     {
+            //         name: '2018/09/10',
+            //         value: 1065
+            //     }
+            // ],
+            // options: {
+            //     type: 'bar',
+            //     title: {
+            //         text: '最近一周各品类销售图'
+            //     },
+            //     xRorate: 25,
+            //     labels: ['周一', '周二', '周三', '周四', '周五'],
+            //     datasets: [
+            //         {
+            //             label: '家电',
+            //             data: [234, 278, 270, 190, 230]
+            //         },
+            //         {
+            //             label: '百货',
+            //             data: [164, 178, 190, 135, 160]
+            //         },
+            //         {
+            //             label: '食品',
+            //             data: [144, 198, 150, 235, 120]
+            //         }
+            //     ]
+            // },
             options2: {
                 type: 'line',
                 title: {

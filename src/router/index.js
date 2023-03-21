@@ -66,9 +66,15 @@ export default new Router({
                 },
                 {
                     // vue-schart组件
+                    path: '/users',
+                    component: () => import(/* webpackChunkName: "chart" */ '../components/page/UserStatus.vue'),
+                    meta: { title: '用户数据' }
+                },
+                {
+                    // vue-schart组件
                     path: '/charts',
                     component: () => import(/* webpackChunkName: "chart" */ '../components/page/BaseCharts.vue'),
-                    meta: { title: 'schart图表' }
+                    meta: { title: 'charts图表' }
                 },
                 {
                     // 拖拽列表组件
