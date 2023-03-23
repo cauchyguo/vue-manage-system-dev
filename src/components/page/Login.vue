@@ -30,6 +30,7 @@
 <script>
 import request from '@/utils/request';
 import service from '@/utils/request';
+import md5 from "js-md5";
 import axios from "axios";
 
 export default {
@@ -53,10 +54,12 @@ export default {
                     console.log("初始验证成功");
                     // const url = "http://127.0.0.1:5000/admin/login";
                     let admin_user_data = new FormData();
-                    this.param.password = md5(this.param.password);
                     console.log(this.param.password);
+                    let tmp = md5(this.param.password);
+                    // console.log(this.param.password);
                     admin_user_data.append('admin_name', this.param.username);
-                    admin_user_data.append('password',this.param.password)
+                    admin_user_data.append('password',tmp)
+                    console.log(admin_user_data);
 
                     axios.post('/admin/login',admin_user_data).then(
                         res => {
@@ -67,11 +70,12 @@ export default {
                                 localStorage.setItem('ms_username', this.param.username);
                                 this.$router.push('/');
                             }else {
-                                this.$message.warning('用户密码错误');
+                                this.$message.warning(res.data.message);
                                 console.log("失败")
                             }
                         }
                     ).catch(err => {
+                        console.log(err);
                         this.$message.error('网络请求失败');
                     })
                     // this.$message.success('登录成功');

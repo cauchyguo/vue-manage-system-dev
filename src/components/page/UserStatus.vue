@@ -113,22 +113,25 @@ export default {
                 },
                 series:[
                     {
+
                         name: "Area Mode",
                         type: "pie",
-                        label:{
-                            show: true,
-
-                        },
-                        data:[
+                        data: [
                             {
-                                value:male,
+                                value: male,
                                 name: '男性',
                             },
                             {
                                 value: female,
                                 name: '女性',
                             },
-                        ]
+                        ],
+                        label:{
+                            normal:{
+                                show: true,
+                                // position: 'top',
+                            }
+                        },
                     },
                 ]
             };

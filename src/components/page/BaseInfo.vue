@@ -84,7 +84,7 @@
 <script>
 import axios from "axios";
 import VueCropper  from 'vue-cropperjs';
-
+import md5 from "js-md5";
 export default {
     name: 'baseform',
     data() {
@@ -129,14 +129,13 @@ export default {
                     if (this.form.password1 === this.form.password2) {
                         console.log("修改信息初始验证成功");
                         let newinfo_data = new FormData();
+                        let password1 = md5(this.form.password1);
+                        let password2 = md5(this.form.password2);
                         newinfo_data.append('admin_name', this.form.admin_name);
-                        newinfo_data.append('password', this.form.password1);
-                        newinfo_data.append('repeat_password', this.form.password2);
+                        newinfo_data.append('password', password1);
+                        newinfo_data.append('repeat_password', password1);
                         newinfo_data.append('email', this.form.email);
-                        // console.log(newinfo_data);
-                        // console.log(this.form.admin_name);
-                        // console.log(this.form.password1);
-                        // console.log(this.form.email);
+
                         axios.post('/admin/setting', newinfo_data).then(
                             res => {
                                 console.log(res);
@@ -145,6 +144,8 @@ export default {
                                     console.log('修改信息成功');
                                     localStorage.setItem('ms_username', this.form.admin_name);
                                     this.$router.push('/');
+                                } else {
+                                    this.$message.warning(res.data.message);
                                 }
                             }
                         ).catch(err => {

@@ -79,6 +79,7 @@ export default {
                         if (res.data.code === 200) {
                             console.log("管理员登出成功");
                             localStorage.removeItem('ms_username');
+                            this.$message.success("登出成功");
                             this.$router.push('/login');
                         } else {
                             this.$message.warning('登出错误');

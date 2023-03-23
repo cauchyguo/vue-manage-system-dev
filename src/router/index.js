@@ -32,6 +32,11 @@ export default new Router({
                     meta: { title: '数据图片' }
                 },
                 {
+                    path: '/usermanage',
+                    component: () => import(/* webpackChunkName: "table" */ '../components/page/UserManage.vue'),
+                    meta: { title: '用户管理' }
+                },
+                {
                     path: '/table',
                     component: () => import(/* webpackChunkName: "table" */ '../components/page/BaseTable.vue'),
                     meta: { title: '基础表格' }

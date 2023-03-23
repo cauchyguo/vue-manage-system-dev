@@ -68,6 +68,10 @@ export default {
                     subs: [
                         {
                             index: 'users',
+                            title: '用户统计'
+                        },
+                        {
+                            index: 'usermanage',
                             title: '用户数据'
                         },
                         {
