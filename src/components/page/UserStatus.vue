@@ -141,7 +141,7 @@ export default {
         initChart2(top_city_dict) {
             this.option2 = {
                 title:{
-                    text: '用户地区分布',
+                    text: '用户学历分布',
                     left: 'center',
                 },
                 xAxis: {

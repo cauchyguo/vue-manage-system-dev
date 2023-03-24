@@ -31,6 +31,7 @@
                 <el-table-column prop="user_name" label="用户名" width="120" align="center"></el-table-column>
                 <el-table-column prop="sex" label="性别" width="70" align="center"></el-table-column>
                 <el-table-column prop="age" label="年龄" width="70" align="center"></el-table-column>
+                <el-table-column prop="background" label="学历" width="150" align="center"></el-table-column>
                 <el-table-column prop="school" label="学校" width="150" align="center"></el-table-column>
                 <el-table-column prop="email" label="邮箱" width="200" align="center"></el-table-column>
                 <el-table-column prop="address" label="地址" width="80" align="center"></el-table-column>
@@ -87,6 +88,9 @@
                 </el-form-item>
                 <el-form-item label="年龄">
                     <el-input v-model="form.age"></el-input>
+                </el-form-item>
+                <el-form-item label="学历">
+                    <el-input v-model="form.background"></el-input>
                 </el-form-item>
                 <el-form-item label="学校">
                     <el-input v-model="form.school"></el-input>
@@ -235,6 +239,7 @@ export default {
             tmp.append('user_name', this.tableData[this.idx].user_name);
             tmp.append('open_id', this.tableData[this.idx].open_id);
             tmp.append('sex', this.tableData[this.idx].sex);
+            tmp.append('background', this.tableData[this.idx].background);
             tmp.append('school', this.tableData[this.idx].school);
             tmp.append('email', this.tableData[this.idx].email);
             tmp.append('age', this.tableData[this.idx].age);

@@ -98,13 +98,84 @@
                         </el-card>
                     </el-col>
                 </el-row>
-                <el-card shadow="hover" style="height:403px;">
-                    <schart ref="line" class="schart" canvasId="line" :options="options2"></schart>
+                <el-row :gutter="20" class="mgb20">
+                    <el-card shadow="hover" style="height:400px;align-content: center">
+                        <!--                    <schart ref="line" class="schart" canvasId="line" :options="options2"></schart>-->
+                        <div class="grid-content-chart1 bg-purple" id="chart1" ></div>
+                    </el-card>
+                </el-row>
 
-                </el-card>
             </el-col>
         </el-row>
+        <el-row :gutter="20">
+            <el-col>
+                <el-row :gutter="20" class="mgb20" >
+                    <el-col :span="8">
+                        <el-row :gutter="5">
+                            <el-card shadow="hover" :body-style="{padding: '0px'}">
+                                <div class="grid-content grid-con-1">
+                                    <i class="el-icon-lx-people grid-con-icon"></i>
+                                    <div class="grid-cont-right">
+                                        <div class="el-icon-lx-peoplefill grid-num1">总用户: {{ user_today }}</div>
+                                        <br/>
+                                        <div class="el-icon-lx-people grid-num1">
+                                            老用户: {{ old_user_today }}</div>
+                                        <br/>
+                                        <div class="el-icon-lx-friendadd grid-num1">新用户: {{ new_user_today }}</div>
+                                    </div>
+                                </div>
+                            </el-card>
+                        </el-row>
+                        <el-row :gutter="5">
+                            <el-card shadow="hover" :body-style="{padding: '0px'}">
+                                <div class="grid-content grid-con-2">
+                                    <i class="el-icon-lx-delete grid-con-icon"></i>
+                                    <div class="grid-cont-right">
+                                        <div>垃圾分类次数</div>
+                                        <div class="grid-num">{{ gb_classify_today }}</div>
+                                    </div>
+                                </div>
+                            </el-card>
+                        </el-row>
+                        <el-row :gutter="5">
+                            <el-card shadow="hover" :body-style="{padding: '0px'}">
+                                <div class="grid-content grid-con-3">
+                                    <i class="el-icon-lx-emojifill grid-con-icon"></i>
+                                    <div class="grid-cont-right">
+                                        <div>考试答题次数</div>
+                                        <div class="grid-num">{{ game_play_today }}</div>
+                                    </div>
+                                </div>
+                            </el-card>
+                        </el-row>
 
+                    </el-col>
+                    <el-col :span="8">
+                        <el-card shadow="hover" :body-style="{padding: '0px'}">
+                            <div class="grid-content grid-con-2">
+                                <i class="el-icon-lx-delete grid-con-icon"></i>
+                                <div class="grid-cont-right">
+                                    <div>垃圾分类次数</div>
+                                    <div class="grid-num">{{ gb_classify_today }}</div>
+                                </div>
+                            </div>
+                        </el-card>
+                    </el-col>
+                    <el-col :span="8">
+                        <el-card shadow="hover" :body-style="{padding: '0px'}">
+                            <div class="grid-content grid-con-3">
+                                <i class="el-icon-lx-emojifill grid-con-icon"></i>
+                                <div class="grid-cont-right">
+                                    <div>考试答题次数</div>
+                                    <div class="grid-num">{{ game_play_today }}</div>
+                                </div>
+                            </div>
+                        </el-card>
+                    </el-col>
+                </el-row>
+            </el-col>
+
+        </el-row>
     </div>
 </template>
 
@@ -113,6 +184,7 @@ import Schart from 'vue-schart';
 
 import bus from '../common/bus';
 import axios from "axios";
+import * as echarts from "echarts";
 export default {
     name: 'dashboard',
     created() {
@@ -120,6 +192,22 @@ export default {
     },
     data() {
         return {
+
+            // chart1
+            chartDom1: "",
+            mychart1: "",
+            option1: "",
+
+            // // chart2
+            // chartDom2: "",
+            // mychart2: "",
+            // option2: "",
+            //
+            // // chart3
+            // chartDom3: "",
+            // mychart3: "",
+            // option3: "",
+
             name: localStorage.getItem('ms_username'),
             user_today: 0,
             new_user_today: 0,
@@ -164,6 +252,21 @@ export default {
             return this.name === 'admin' ? '超级管理员' : '普通用户';
         }
     },
+
+    mounted() {
+        this.chartDom1 = document.getElementById('chart1');
+        this.mychart1 = echarts.init((this.chartDom1));
+
+        // this.chartDom2 = document.getElementById('chart2');
+        // this.mychart2 = echarts.init((this.chartDom2));
+        //
+        // this.chartDom3 = document.getElementById('chart3');
+        // this.mychart3 = echarts.init((this.chartDom3));
+
+        this.getdata();
+
+    },
+
     methods: {
 
         async getdata() {
@@ -181,6 +284,10 @@ export default {
                     this.top_picture_list_today= this.obj.top_info_today.top_picture_list_today;
                     this.top_vocal_list_today= this.obj.top_info_today.top_vocal_list_today;
 
+                    let user_online_list = this.obj.user_online_list
+
+                    this.initChart1(user_online_list);
+
 
                     // this.options2.datasets
 
@@ -196,7 +303,61 @@ export default {
                 const date = new Date(now - (6 - index) * 86400000);
                 item.name = `${date.getFullYear()}/${date.getMonth() + 1}/${date.getDate()}`;
             });
-        }
+        },
+        initChart1(online_data) {
+            this.option1 = {
+                title:{
+                    text: '用户在线数据',
+                    left: 'center',
+                },
+                legend:{
+                    left: "center",
+                    top: "bottom",
+                    data: ['在线人数', '新用户人数','老用户人数'],
+                },
+                xAxis: {
+                    // type: 'value',
+                    data: Object.keys(online_data.users_online_list),
+                },
+                yAxis: {},
+                series: [
+                    {
+                        label:{
+                            normal:{
+                                show: true,
+                                position: 'top',
+                            }
+                        },
+                        name: '在线人数',
+                        type: 'line',
+                        data: Object.values(online_data.users_online_list),
+                    },
+                    {
+                        label:{
+                            normal:{
+                                show: true,
+                                position: 'top',
+                            }
+                        },
+                        name: '新用户人数',
+                        type: 'line',
+                        data: Object.values(online_data.new_users_online_list),
+                    },
+                    {
+                        label:{
+                            normal:{
+                                show: true,
+                                position: 'top',
+                            }
+                        },
+                        name: '老用户人数',
+                        type: 'line',
+                        data: Object.values(online_data.old_users_online_list),
+                    },
+                ]
+            };
+            this.option1 && this.mychart1.setOption(this.option1);
+        },
     }
 };
 </script>
@@ -264,6 +425,12 @@ export default {
     text-align: center;
     line-height: 100px;
     color: #fff;
+}
+
+.grid-content-chart1 {
+    align-content: center;
+    height: 300px;
+    width: 400px;
 }
 
 .grid-con-1 .grid-con-icon {
