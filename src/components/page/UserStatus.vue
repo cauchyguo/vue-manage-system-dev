@@ -127,10 +127,16 @@ export default {
                             },
                         ],
                         label:{
+
                             normal:{
+                                formatter: `{d}%`,
+                                color: "#ffffff", //颜色
+                                fontSize: 12, //字体大小
                                 show: true,
-                                // position: 'top',
-                            }
+                                position: "inside", //outside 外部显示  inside 内部显示
+
+                            },
+                            labelLine :{show:true}
                         },
                     },
                 ]
@@ -205,8 +211,12 @@ export default {
                             },
                             normal:{
                                 show: true,
-                                // position: 'top',
-                            }
+                                formatter: `{d}%`,
+                                color: "#ffffff", //颜色
+                                fontSize: 12, //字体大小
+                                position: "inside", //outside 外部显示  inside 内部显示
+                            },
+                            labelLine :{show:true},
                         },
                     },
                 ]

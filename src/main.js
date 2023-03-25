@@ -26,8 +26,8 @@ const i18n = new VueI18n({
 });
 
 axios.defaults.headers['Content-Type'] = 'application/json;charset=utf-8'
-// axios.defaults.baseURL = 'http://127.0.0.1:5000'
-axios.defaults.baseURL = '/api'
+axios.defaults.baseURL = 'http://127.0.0.1:5000'
+// axios.defaults.baseURL = '/api'
 
 
 //使用钩子函数对路由进行权限跳转

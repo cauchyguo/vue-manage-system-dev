@@ -2,7 +2,7 @@
     <div>
         <el-row :gutter="20">
             <el-col :span="8">
-                <el-card shadow="hover" class="mgb20" style="height:200px;">
+                <el-card shadow="hover" class="mgb20" style="height:213px;">
                     <div class="user-info">
                         <img src="../../assets/img/img.jpg" class="user-avator" alt />
                         <div class="user-info-cont">
@@ -24,7 +24,7 @@
                         <el-card shadow="hover" :body-style="{padding: '0px'}" class="box-card">
                             <div>
                                 <div class="hot-words-title" slot="header">
-                                    <span>热门文本(Top5)</span>
+                                    <span> 热门文本(Top5)</span>
                                 </div>
                                 <div v-for="(item,i) in top_words_list_today" class="text-item" >
                                     {{i + 1}}  {{item}}
@@ -57,6 +57,35 @@
                         </el-card>
                     </el-col>
                 </el-row>
+
+<!--                第三行-->
+                <el-row :gutter="20">
+                    <el-col :span="12">
+                        <el-card shadow="hover" :body-style="{padding: '0px'}" class="box-card1">
+                            <div>
+                                <div class="hot-words-title" slot="header" align="center">
+                                    <span>答题数量排行(Top5)</span>
+                                </div>
+                                <div v-for="(item,i) in user_rank_by_playnum" class="text-item" >
+                                    {{i + 1}}  {{item}}
+                                </div>
+                            </div>
+                        </el-card>
+                    </el-col>
+                    <el-col :span="12">
+                        <el-card shadow="hover" :body-style="{padding: '0px'}"  class="box-card1">
+                            <div>
+                                <div class="hot-words-title" slot="header">
+                                    <span>积分排行(Top5)</span>
+                                </div>
+                                <div v-for="(item,i) in user_rank_by_score" class="text-item" >
+                                    {{i + 1}}  {{item}}
+                                </div>
+                            </div>
+                        </el-card>
+                    </el-col>
+
+                </el-row>
             </el-col>
             <el-col :span="16">
                 <el-row :gutter="20" class="mgb20">
@@ -65,12 +94,8 @@
                             <div class="grid-content grid-con-1">
                                 <i class="el-icon-lx-people grid-con-icon"></i>
                                 <div class="grid-cont-right">
-                                    <div class="el-icon-lx-peoplefill grid-num1">总用户: {{ user_today }}</div>
-                                    <br/>
-                                    <div class="el-icon-lx-people grid-num1">
-                                        老用户: {{ old_user_today }}</div>
-                                    <br/>
-                                    <div class="el-icon-lx-friendadd grid-num1">新用户: {{ new_user_today }}</div>
+                                    <div>今日总用户</div>
+                                    <div class="grid-num">{{ user_today }}</div>
                                 </div>
                             </div>
                         </el-card>
@@ -78,10 +103,10 @@
                     <el-col :span="8">
                         <el-card shadow="hover" :body-style="{padding: '0px'}">
                             <div class="grid-content grid-con-2">
-                                <i class="el-icon-lx-delete grid-con-icon"></i>
+                                <i class="el-icon-lx-friendadd grid-con-icon"></i>
                                 <div class="grid-cont-right">
-                                    <div>垃圾分类次数</div>
-                                    <div class="grid-num">{{ gb_classify_today }}</div>
+                                    <div>今日新用户</div>
+                                    <div class="grid-num">{{ new_user_today }}</div>
                                 </div>
                             </div>
                         </el-card>
@@ -89,73 +114,33 @@
                     <el-col :span="8">
                         <el-card shadow="hover" :body-style="{padding: '0px'}">
                             <div class="grid-content grid-con-3">
-                                <i class="el-icon-lx-emojifill grid-con-icon"></i>
+                                <i class="el-icon-lx-peoplefill grid-con-icon"></i>
                                 <div class="grid-cont-right">
-                                    <div>考试答题次数</div>
-                                    <div class="grid-num">{{ game_play_today }}</div>
+                                    <div>今日老用户</div>
+                                    <div class="grid-num">{{ old_user_today }}</div>
                                 </div>
                             </div>
                         </el-card>
                     </el-col>
                 </el-row>
                 <el-row :gutter="20" class="mgb20">
-                    <el-card shadow="hover" style="height:400px;align-content: center">
-                        <!--                    <schart ref="line" class="schart" canvasId="line" :options="options2"></schart>-->
-                        <div class="grid-content-chart1 bg-purple" id="chart1" ></div>
-                    </el-card>
-                </el-row>
-
-            </el-col>
-        </el-row>
-        <el-row :gutter="20">
-            <el-col>
-                <el-row :gutter="20" class="mgb20" >
                     <el-col :span="8">
-                        <el-row :gutter="5">
-                            <el-card shadow="hover" :body-style="{padding: '0px'}">
-                                <div class="grid-content grid-con-1">
-                                    <i class="el-icon-lx-people grid-con-icon"></i>
-                                    <div class="grid-cont-right">
-                                        <div class="el-icon-lx-peoplefill grid-num1">总用户: {{ user_today }}</div>
-                                        <br/>
-                                        <div class="el-icon-lx-people grid-num1">
-                                            老用户: {{ old_user_today }}</div>
-                                        <br/>
-                                        <div class="el-icon-lx-friendadd grid-num1">新用户: {{ new_user_today }}</div>
-                                    </div>
+                        <el-card shadow="hover" :body-style="{padding: '0px'}">
+                            <div class="grid-content grid-con-1">
+                                <i class="el-icon-lx-people grid-con-icon"></i>
+                                <div class="grid-cont-right">
+                                    <div>今日答题人数</div>
+                                    <div class="grid-num">{{ user_today }}</div>
                                 </div>
-                            </el-card>
-                        </el-row>
-                        <el-row :gutter="5">
-                            <el-card shadow="hover" :body-style="{padding: '0px'}">
-                                <div class="grid-content grid-con-2">
-                                    <i class="el-icon-lx-delete grid-con-icon"></i>
-                                    <div class="grid-cont-right">
-                                        <div>垃圾分类次数</div>
-                                        <div class="grid-num">{{ gb_classify_today }}</div>
-                                    </div>
-                                </div>
-                            </el-card>
-                        </el-row>
-                        <el-row :gutter="5">
-                            <el-card shadow="hover" :body-style="{padding: '0px'}">
-                                <div class="grid-content grid-con-3">
-                                    <i class="el-icon-lx-emojifill grid-con-icon"></i>
-                                    <div class="grid-cont-right">
-                                        <div>考试答题次数</div>
-                                        <div class="grid-num">{{ game_play_today }}</div>
-                                    </div>
-                                </div>
-                            </el-card>
-                        </el-row>
-
+                            </div>
+                        </el-card>
                     </el-col>
                     <el-col :span="8">
                         <el-card shadow="hover" :body-style="{padding: '0px'}">
                             <div class="grid-content grid-con-2">
-                                <i class="el-icon-lx-delete grid-con-icon"></i>
+                                <i class="el-icon-lx-emojifill grid-con-icon"></i>
                                 <div class="grid-cont-right">
-                                    <div>垃圾分类次数</div>
+                                    <div>今日答题次数</div>
                                     <div class="grid-num">{{ gb_classify_today }}</div>
                                 </div>
                             </div>
@@ -166,15 +151,20 @@
                             <div class="grid-content grid-con-3">
                                 <i class="el-icon-lx-emojifill grid-con-icon"></i>
                                 <div class="grid-cont-right">
-                                    <div>考试答题次数</div>
-                                    <div class="grid-num">{{ game_play_today }}</div>
+                                    <div>分类次数</div>
+                                    <div class="grid-num">{{ gb_classify_today }}</div>
                                 </div>
                             </div>
                         </el-card>
                     </el-col>
                 </el-row>
-            </el-col>
+                <el-row :gutter="20" class="mgb20">
+                    <el-card shadow="hover" style="height:562px;align-content: center">
+                        <div class="grid-content-chart1 bg-purple" id="chart1" ></div>
+                    </el-card>
+                </el-row>
 
+            </el-col>
         </el-row>
     </div>
 </template>
@@ -217,6 +207,8 @@ export default {
             top_words_list_today: [],
             top_picture_list_today: [],
             top_vocal_list_today: [],
+            user_rank_by_playnum: [],
+            user_rank_by_score: [],
 
             options2: {
                 type: 'line',
@@ -283,6 +275,8 @@ export default {
                     this.top_words_list_today= this.obj.top_info_today.top_words_list_today;
                     this.top_picture_list_today= this.obj.top_info_today.top_picture_list_today;
                     this.top_vocal_list_today= this.obj.top_info_today.top_vocal_list_today;
+                    this.user_rank_by_playnum = this.obj.user_rank.user_rank_by_playnum;
+                    this.user_rank_by_score = this.obj.user_rank.user_rank_by_score;
 
                     //
 
@@ -346,58 +340,6 @@ export default {
                 ]
             };
             this.option1 && this.mychart1.setOption(this.option1);
-            // this.option1 = {
-            //     title:{
-            //         text: '用户在线数据',
-            //         left: 'center',
-            //     },
-            //     legend:{
-            //         left: "center",
-            //         top: "bottom",
-            //         data: ['在线人数', '新用户人数','老用户人数'],
-            //     },
-            //     xAxis: {
-            //         // type: 'value',
-            //         data: Object.keys(online_data.users_online_list),
-            //     },
-            //     yAxis: {},
-            //     series: [
-            //         {
-            //             label:{
-            //                 normal:{
-            //                     show: true,
-            //                     position: 'top',
-            //                 }
-            //             },
-            //             name: '在线人数',
-            //             type: 'line',
-            //             data: Object.values(online_data.users_online_list),
-            //         },
-            //         {
-            //             label:{
-            //                 normal:{
-            //                     show: true,
-            //                     position: 'top',
-            //                 }
-            //             },
-            //             name: '新用户人数',
-            //             type: 'line',
-            //             data: Object.values(online_data.new_users_online_list),
-            //         },
-            //         {
-            //             label:{
-            //                 normal:{
-            //                     show: true,
-            //                     position: 'top',
-            //                 }
-            //             },
-            //             name: '老用户人数',
-            //             type: 'line',
-            //             data: Object.values(online_data.old_users_online_list),
-            //         },
-            //     ]
-            // };
-            // this.option1 && this.mychart1.setOption(this.option1);
         },
     }
 };
@@ -411,7 +353,14 @@ export default {
 .box-card {
     display: flex;
     align-content: center;
-    height: 300px;
+    height: 270px;
+    /*display-inside: ;*/
+}
+
+.box-card1{
+    display: flex;
+    align-content: center;
+    height: 270px;
     /*display-inside: ;*/
 }
 
@@ -470,8 +419,8 @@ export default {
 
 .grid-content-chart1 {
     align-content: center;
-    height: 300px;
-    width: 400px;
+    height: 450px;
+    width: 600px;
 }
 
 .grid-con-1 .grid-con-icon {
