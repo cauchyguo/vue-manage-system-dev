@@ -56,7 +56,7 @@ export default {
                     let admin_user_data = new FormData();
                     console.log(this.param.password);
                     let tmp = md5(this.param.password);
-                    // console.log(this.param.password);
+                    // console.log(tmp);
                     admin_user_data.append('admin_name', this.param.username);
                     admin_user_data.append('password',tmp)
                     console.log(admin_user_data);

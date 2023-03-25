@@ -284,9 +284,9 @@ export default {
                     this.top_picture_list_today= this.obj.top_info_today.top_picture_list_today;
                     this.top_vocal_list_today= this.obj.top_info_today.top_vocal_list_today;
 
-                    let user_online_list = this.obj.user_online_list
+                    //
 
-                    this.initChart1(user_online_list);
+                    this.initChart1(this.obj.user_login_by_week,this.obj.user_game_by_week);
 
 
                     // this.options2.datasets
@@ -304,20 +304,20 @@ export default {
                 item.name = `${date.getFullYear()}/${date.getMonth() + 1}/${date.getDate()}`;
             });
         },
-        initChart1(online_data) {
+        initChart1(user_login_by_week,user_game_by_week) {
             this.option1 = {
                 title:{
-                    text: '用户在线数据',
+                    text: '用户上周使用情况',
                     left: 'center',
                 },
                 legend:{
                     left: "center",
                     top: "bottom",
-                    data: ['在线人数', '新用户人数','老用户人数'],
+                    data: ['用户使用人数', '答题人数'],
                 },
                 xAxis: {
                     // type: 'value',
-                    data: Object.keys(online_data.users_online_list),
+                    data: ['周一', '周二', '周三', '周四', '周五','周六','周日'],
                 },
                 yAxis: {},
                 series: [
@@ -328,35 +328,76 @@ export default {
                                 position: 'top',
                             }
                         },
-                        name: '在线人数',
+                        name: '用户使用人数',
                         type: 'line',
-                        data: Object.values(online_data.users_online_list),
+                        data: user_login_by_week,
                     },
                     {
                         label:{
                             normal:{
                                 show: true,
-                                position: 'top',
+                                position: 'bottom',
                             }
                         },
-                        name: '新用户人数',
+                        name: '答题人数',
                         type: 'line',
-                        data: Object.values(online_data.new_users_online_list),
-                    },
-                    {
-                        label:{
-                            normal:{
-                                show: true,
-                                position: 'top',
-                            }
-                        },
-                        name: '老用户人数',
-                        type: 'line',
-                        data: Object.values(online_data.old_users_online_list),
+                        data: user_game_by_week,
                     },
                 ]
             };
             this.option1 && this.mychart1.setOption(this.option1);
+            // this.option1 = {
+            //     title:{
+            //         text: '用户在线数据',
+            //         left: 'center',
+            //     },
+            //     legend:{
+            //         left: "center",
+            //         top: "bottom",
+            //         data: ['在线人数', '新用户人数','老用户人数'],
+            //     },
+            //     xAxis: {
+            //         // type: 'value',
+            //         data: Object.keys(online_data.users_online_list),
+            //     },
+            //     yAxis: {},
+            //     series: [
+            //         {
+            //             label:{
+            //                 normal:{
+            //                     show: true,
+            //                     position: 'top',
+            //                 }
+            //             },
+            //             name: '在线人数',
+            //             type: 'line',
+            //             data: Object.values(online_data.users_online_list),
+            //         },
+            //         {
+            //             label:{
+            //                 normal:{
+            //                     show: true,
+            //                     position: 'top',
+            //                 }
+            //             },
+            //             name: '新用户人数',
+            //             type: 'line',
+            //             data: Object.values(online_data.new_users_online_list),
+            //         },
+            //         {
+            //             label:{
+            //                 normal:{
+            //                     show: true,
+            //                     position: 'top',
+            //                 }
+            //             },
+            //             name: '老用户人数',
+            //             type: 'line',
+            //             data: Object.values(online_data.old_users_online_list),
+            //         },
+            //     ]
+            // };
+            // this.option1 && this.mychart1.setOption(this.option1);
         },
     }
 };

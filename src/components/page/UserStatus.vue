@@ -138,30 +138,102 @@ export default {
             this.option1 && this.mychart1.setOption(this.option1);
             // this.mychart1.resize();
         },
-        initChart2(top_city_dict) {
+        initChart2(values) {
             this.option2 = {
                 title:{
                     text: '用户学历分布',
                     left: 'center',
                 },
-                xAxis: {
-                    // type: 'value',
-                    data: Object.keys(top_city_dict),
+                // top: top + '%',
+                // height: '33.33%',
+                legend:{
+                    left: "center",
+                    top: "bottom",
+                    data: ['无','小学', '中学','大专','本科','研究生'],
                 },
-                yAxis: {},
-                series: [
+                toolbox:{
+                    show: true,
+                },
+                series:[
                     {
+
+                        name: "Area Mode",
+                        type: "pie",
+                        radius: ['30%', '70%'],
+                        avoidLabelOverlap: true,
+                        data: [
+                            {
+                                value: values[0],
+                                name: '无',
+                            },
+                            {
+                                value: values[1],
+                                name: '小学',
+                            },
+                            {
+                                value: values[2],
+                                name: '中学',
+                            },
+                            {
+                                value: values[3],
+                                name: '大专',
+                            },
+                            {
+                                value: values[4],
+                                name: '本科',
+                            },
+                            {
+                                value: values[5],
+                                name: '研究生',
+                            },
+                            // {
+                            //     value: values[6],
+                            //     name: '博士',
+                            // },
+
+                        ],
                         label:{
+                            alignTo: 'edge',
+                            minMargin: 5,
+                            edgeDistance: 10,
+                            lineHeight: 15,
+                            rich: {
+                                time: {
+                                    fontSize: 10,
+                                    color: '#999'
+                                }
+                            },
                             normal:{
                                 show: true,
-                                position: 'top',
+                                // position: 'top',
                             }
                         },
-                        type: 'bar',
-                        data: Object.values(top_city_dict),
                     },
                 ]
             };
+            // this.option2 = {
+            //     title:{
+            //         text: '用户学历分布',
+            //         left: 'center',
+            //     },
+            //     xAxis: {
+            //         // type: 'value',
+            //         data: Object.keys(top_city_dict),
+            //     },
+            //     yAxis: {},
+            //     series: [
+            //         {
+            //             label:{
+            //                 normal:{
+            //                     show: true,
+            //                     position: 'top',
+            //                 }
+            //             },
+            //             type: 'bar',
+            //             data: Object.values(top_city_dict),
+            //         },
+            //     ]
+            // };
             this.option2 && this.mychart2.setOption(this.option2);
         },
         // },
@@ -190,6 +262,7 @@ export default {
                         data: male_list,
                         stack: 'x',
                         label:{
+
                             normal:{
                                 show: true,
                                 position: 'top',
@@ -214,20 +287,20 @@ export default {
             this.option3 && this.mychart3.setOption(this.option3);
 
         },
-        initChart4(user_login_by_week,user_game_by_week) {
+        initChart4(online_data) {
             this.option4 = {
                 title:{
-                    text: '用户上周使用情况',
+                    text: '用户在线数据',
                     left: 'center',
                 },
                 legend:{
                     left: "center",
                     top: "bottom",
-                    data: ['用户使用人数', '答题人数'],
+                    data: ['在线人数', '新用户人数','老用户人数'],
                 },
                 xAxis: {
                     // type: 'value',
-                    data: ['周一', '周二', '周三', '周四', '周五','周六','周日'],
+                    data: Object.keys(online_data.users_online_list),
                 },
                 yAxis: {},
                 series: [
@@ -238,24 +311,76 @@ export default {
                                 position: 'top',
                             }
                         },
-                        name: '用户使用人数',
+                        name: '在线人数',
                         type: 'line',
-                        data: user_login_by_week,
+                        data: Object.values(online_data.users_online_list),
                     },
                     {
                         label:{
                             normal:{
                                 show: true,
-                                position: 'bottom',
+                                position: 'top',
                             }
                         },
-                        name: '答题人数',
+                        name: '新用户人数',
                         type: 'line',
-                        data: user_game_by_week,
+                        data: Object.values(online_data.new_users_online_list),
+                    },
+                    {
+                        label:{
+                            normal:{
+                                show: true,
+                                position: 'top',
+                            }
+                        },
+                        name: '老用户人数',
+                        type: 'line',
+                        data: Object.values(online_data.old_users_online_list),
                     },
                 ]
             };
             this.option4 && this.mychart4.setOption(this.option4);
+            // this.option4 = {
+            //     title:{
+            //         text: '用户上周使用情况',
+            //         left: 'center',
+            //     },
+            //     legend:{
+            //         left: "center",
+            //         top: "bottom",
+            //         data: ['用户使用人数', '答题人数'],
+            //     },
+            //     xAxis: {
+            //         // type: 'value',
+            //         data: ['周一', '周二', '周三', '周四', '周五','周六','周日'],
+            //     },
+            //     yAxis: {},
+            //     series: [
+            //         {
+            //             label:{
+            //                 normal:{
+            //                     show: true,
+            //                     position: 'top',
+            //                 }
+            //             },
+            //             name: '用户使用人数',
+            //             type: 'line',
+            //             data: user_login_by_week,
+            //         },
+            //         {
+            //             label:{
+            //                 normal:{
+            //                     show: true,
+            //                     position: 'bottom',
+            //                 }
+            //             },
+            //             name: '答题人数',
+            //             type: 'line',
+            //             data: user_game_by_week,
+            //         },
+            //     ]
+            // };
+            // this.option4 && this.mychart4.setOption(this.option4);
         },
         initChart5(top_city_dict) {
             this.option5 = {
@@ -296,12 +421,12 @@ export default {
                     console.log(res.data.data);
                     console.log("请求数据成功");
                     this.obj = res.data.data;
-
+                    let user_online_list = this.obj.user_online_list
                     console.log(this.obj);
                     this.initChart1(this.obj.population.male_number, this.obj.population.female_number);
-                    this.initChart2(this.obj.top_user_dist);
+                    this.initChart2(this.obj.background);
                     this.initChart3(this.obj.age_dist.male_age_dist, this.obj.age_dist.female_age_dist);
-                    this.initChart4(this.obj.user_login_by_week,this.obj.user_game_by_week);
+                    this.initChart4(user_online_list);
                     this.initChart5(this.obj.top_user_dist);
 
                 }
