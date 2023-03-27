@@ -38,9 +38,9 @@
                         <i class="el-icon-caret-bottom"></i>
                     </span>
                     <el-dropdown-menu slot="dropdown">
-                        <a href="https://github.com/lin-xin/vue-manage-system" target="_blank">
-                            <el-dropdown-item>项目仓库</el-dropdown-item>
-                        </a>
+<!--                        <a href="https://github.com/lin-xin/vue-manage-system" target="_blank">-->
+<!--                            <el-dropdown-item>项目仓库</el-dropdown-item>-->
+<!--                        </a>-->
                         <el-dropdown-item divided command="changeinfo">修改信息</el-dropdown-item>
                         <el-dropdown-item divided command="changeinfo">修改头像</el-dropdown-item>
                         <el-dropdown-item divided command="loginout">退出登录</el-dropdown-item>

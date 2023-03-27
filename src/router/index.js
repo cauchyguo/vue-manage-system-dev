@@ -37,6 +37,11 @@ export default new Router({
                     meta: { title: '用户管理' }
                 },
                 {
+                    path: '/questionmanage',
+                    component: () => import(/* webpackChunkName: "table" */ '../components/page/QuestionManage.vue'),
+                    meta: { title: '题库管理' }
+                },
+                {
                     path: '/table',
                     component: () => import(/* webpackChunkName: "table" */ '../components/page/BaseTable.vue'),
                     meta: { title: '基础表格' }

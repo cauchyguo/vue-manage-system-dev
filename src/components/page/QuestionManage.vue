@@ -3,7 +3,7 @@
         <div class="crumbs">
             <el-breadcrumb separator="/">
                 <el-breadcrumb-item>
-                    <i class="el-icon-lx-cascades"></i> 垃圾数据集
+                    <i class="el-icon-lx-cascades"></i> 题库管理
                 </el-breadcrumb-item>
             </el-breadcrumb>
         </div>
@@ -15,8 +15,9 @@
                     class="handle-del mr10"
                     @click="delAllSelection"
                 >批量删除</el-button>
-                <el-input v-model="query.name" placeholder="用户名称" class="handle-input mr10"></el-input>
+                <el-input v-model="query.name" placeholder="题库id" class="handle-input mr10"></el-input>
                 <el-button type="primary" icon="el-icon-search" @click="handleSearch">搜索</el-button>
+                <el-button type="primary" icon="el-icon-search" @click="handleNew">新增题目</el-button>
             </div>
             <el-table
                 :data="tableData"
@@ -28,23 +29,15 @@
             >
                 <el-table-column type="selection" width="40" align="center"></el-table-column>
 <!--                <el-table-column prop="open_id" label="open_id"   align="center" ></el-table-column>-->
-                <el-table-column prop="user_name" label="用户名" width="120" align="center"></el-table-column>
-                <el-table-column prop="sex" label="性别" width="70" align="center"></el-table-column>
-                <el-table-column prop="age" label="年龄" width="70" align="center"></el-table-column>
-                <el-table-column prop="background" label="学历" width="150" align="center"></el-table-column>
-                <el-table-column prop="school" label="学校" width="150" align="center"></el-table-column>
-                <el-table-column prop="email" label="邮箱" width="200" align="center"></el-table-column>
-                <el-table-column prop="address" label="地址" width="80" align="center"></el-table-column>
-                <el-table-column prop="gb_classify_nums" label="识别次数" width="80" align="center"></el-table-column>
-                <el-table-column prop="game_play_nums" label="答题次数" width="80" align="center"></el-table-column>
-                <el-table-column prop="accurate" label="答题正确率" width="100" align="center"></el-table-column>
-                <el-table-column label="状态" align="center">
-                    <template slot-scope="scope">
-                        <el-tag
-                            :type="scope.row.state==='成功'?'success':(scope.row.state==='失败'?'danger':'')"
-                        >{{scope.row.state}}</el-tag>
-                    </template>
-                </el-table-column>
+                <el-table-column prop="game_id" label="题目id" width="80" align="center"></el-table-column>
+                <el-table-column prop="game_type" label="题目类型" width="100" align="center"></el-table-column>
+                <el-table-column prop="game_question" label="题目问题" width="360" align="left"></el-table-column>
+                <el-table-column prop="game_choice1" label="选项A" width="120" align="center"></el-table-column>
+                <el-table-column prop="game_choice2" label="选项B" width="120" align="center"></el-table-column>
+                <el-table-column prop="game_choice3" label="选项C" width="120" align="center"></el-table-column>
+                <el-table-column prop="game_choice4" label="选项D" width="120" align="center"></el-table-column>
+                <el-table-column prop="game_answer" label="答案" width="120" align="center"></el-table-column>
+
 
 
                 <el-table-column label="操作" width="180" align="center">
@@ -80,26 +73,32 @@
         <el-dialog title="编辑" :visible.sync="editVisible" width="30%">
             <el-form ref="form" :model="form" label-width="70px">
 
-                <el-form-item label="用户名">
-                    <el-input v-model="form.user_name"></el-input>
+                <el-form-item label="题目id">
+                    <el-input v-model="form.game_id" disabled></el-input>
                 </el-form-item>
-                <el-form-item label="性别">
-                    <el-input v-model="form.sex"></el-input>
+                <el-form-item label="题目类型">
+                    <el-select v-model="form.game_type" placeholder="题目类型" class="handle-select mr10">
+                        <el-option key="1" label="多选" value="多选"></el-option>
+                        <el-option key="2" label="单选" value="单选"></el-option>
+                    </el-select>
                 </el-form-item>
-                <el-form-item label="年龄">
-                    <el-input v-model="form.age"></el-input>
+                <el-form-item label="题目问题">
+                    <el-input v-model="form.game_question"></el-input>
                 </el-form-item>
-                <el-form-item label="学历">
-                    <el-input v-model="form.background"></el-input>
+                <el-form-item label="选项A">
+                    <el-input v-model="form.game_choice1"></el-input>
                 </el-form-item>
-                <el-form-item label="学校">
-                    <el-input v-model="form.school"></el-input>
+                <el-form-item label="选项B">
+                    <el-input v-model="form.game_choice2"></el-input>
                 </el-form-item>
-                <el-form-item label="邮箱">
-                    <el-input v-model="form.email"></el-input>
+                <el-form-item label="选项C">
+                    <el-input v-model="form.game_choice3"></el-input>
                 </el-form-item>
-                <el-form-item label="地址">
-                    <el-input v-model="form.address"></el-input>
+                <el-form-item label="选项D">
+                    <el-input v-model="form.game_choice4"></el-input>
+                </el-form-item>
+                <el-form-item label="答案">
+                    <el-input v-model="form.game_answer"></el-input>
                 </el-form-item>
             </el-form>
             <span slot="footer" class="dialog-footer">
@@ -107,6 +106,42 @@
                 <el-button type="primary" @click="saveEdit">确 定</el-button>
             </span>
         </el-dialog>
+
+        <!-- 新增弹出框 -->
+        <el-dialog title="新增" :visible.sync="editVisible1" width="30%">
+            <el-form ref="form1" :model="form1" label-width="70px">
+                <el-form-item label="题目类型">
+                    <el-select v-model="form1.game_type" placeholder="题目类型" class="handle-select mr10">
+                        <el-option key="1" label="多选" value="多选"></el-option>
+                        <el-option key="2" label="单选" value="单选"></el-option>
+                    </el-select>
+<!--                    <el-input v-model="form1.game_type"></el-input>-->
+                </el-form-item>
+                <el-form-item label="题目问题">
+                    <el-input v-model="form1.game_question"></el-input>
+                </el-form-item>
+                <el-form-item label="选项A">
+                    <el-input v-model="form1.game_choice1"></el-input>
+                </el-form-item>
+                <el-form-item label="选项B">
+                    <el-input v-model="form1.game_choice2"></el-input>
+                </el-form-item>
+                <el-form-item label="选项C">
+                    <el-input v-model="form1.game_choice3"></el-input>
+                </el-form-item>
+                <el-form-item label="选项D">
+                    <el-input v-model="form1.game_choice4"></el-input>
+                </el-form-item>
+                <el-form-item label="答案">
+                    <el-input v-model="form1.game_answer"></el-input>
+                </el-form-item>
+            </el-form>
+            <span slot="footer" class="dialog-footer">
+                <el-button @click="editVisible = false">取 消</el-button>
+                <el-button type="primary" @click="saveNew">确 定</el-button>
+            </span>
+        </el-dialog>
+
     </div>
 </template>
 
@@ -128,8 +163,10 @@ export default {
             multipleSelection: [],
             delList: [],
             editVisible: false,
+            editVisible1: false,
             pageTotal: 0,
             form: {},
+            form1: {},
 
             idx: -1,
             id: -1
@@ -141,12 +178,12 @@ export default {
     methods: {
         // 获取 easy-mock 的模拟数据
         getData() {
-            axios.get('/admin/users/list').then(
+            axios.get('/admin/gameinfo/list').then(
                 res => {
                     console.log("接受到的数据为：");
 
                     console.log(res.data.data);
-                    this.tableData = res.data.data.users_list;
+                    this.tableData = res.data.data.tiku_list;
 
                 }
             ).catch(err => {
@@ -231,37 +268,93 @@ export default {
             this.form = row;
             this.editVisible = true;
         },
-        // 保存编辑
-        saveEdit() {
-            this.editVisible = false;
-            this.$set(this.tableData, this.idx, this.form);
+
+        handleNew() {
+            this.editVisible1 = true;
+            console.log("handleNew");
+            console.log(this.form1);
+        },
+
+        // 保存新增
+        saveNew() {
+            this.editVisible1 = false;
+            console.log('--------');
+            console.log(this.form1.game_question);
+            // this.$set(this.tableData, this.idx, this.form1);
             let tmp = new FormData();
-            tmp.append('user_name', this.tableData[this.idx].user_name);
-            tmp.append('open_id', this.tableData[this.idx].open_id);
-            tmp.append('sex', this.tableData[this.idx].sex);
-            tmp.append('background', this.tableData[this.idx].background);
-            tmp.append('school', this.tableData[this.idx].school);
-            tmp.append('email', this.tableData[this.idx].email);
-            tmp.append('age', this.tableData[this.idx].age);
-            tmp.append('address', this.tableData[this.idx].address);
+            tmp.append('game_type', this.form1.game_type);
+            tmp.append('game_question', this.form1.game_question);
+            tmp.append('game_choice1', this.form1.game_choice1);
+            tmp.append('game_choice2', this.form1.game_choice2);
+            tmp.append('game_choice3', this.form1.game_choice3);
+            tmp.append('game_choice4', this.form1.game_choice4);
+            tmp.append('game_answer', this.form1.game_answer);
+            console.log('--------------');
             console.log(tmp);
-            axios.post('/admin/users/update', tmp).then(
+            axios.post('/admin/gameinfo/new', tmp).then(
                 res => {
                     console.log(res);
                     if (res.data.code === 200) {
-                        this.$message.success('修改成功');
-                        this.$message.success(`修改第 ${this.idx + 1} 行成功`);
-                        console.log('修改该用户信息成功');
+                        console.log(res.data.data)
+                        this.$message.success('新增成功');
+                        // this.$message.success(`修改第 ${this.idx + 1} 行成功`);
+                        console.log('新增题库信息成功');
                     } else {
                         this.getData();
                         this.$message.error(res.data.message);
-                        this.$router.push('/usermanage');
+                        this.$router.push('/questionmanage');
                     }
                 }
             ).catch(err => {
                 this.getData();
                 this.$message.error('网络请求失败');
             })
+            // this.$set(this.tableData, this.idx, this.form);
+            this.getData();
+        },
+        // 保存编辑
+        saveEdit() {
+            this.editVisible = false;
+            // this.$set(this.tableData, this.idx, this.form);
+            let tmp = new FormData();
+            tmp.append('game_id', this.form.game_id);
+            tmp.append('game_type', this.form.game_type);
+            tmp.append('game_question', this.form.game_question);
+            tmp.append('game_choice1', this.form.game_choice1);
+            tmp.append('game_choice2', this.form.game_choice2);
+            tmp.append('game_choice3', this.form.game_choice3);
+            tmp.append('game_choice4', this.form.game_choice4);
+            tmp.append('game_answer', this.form.game_answer);
+            // tmp.append('game_id', this.tableData[this.idx].game_id);
+            // tmp.append('game_type', this.tableData[this.idx].game_type);
+            // tmp.append('game_question', this.tableData[this.idx].game_question);
+            // tmp.append('game_choice1', this.tableData[this.idx].game_choice1);
+            // tmp.append('game_choice2', this.tableData[this.idx].game_choice2);
+            // tmp.append('game_choice3', this.tableData[this.idx].game_choice3);
+            // tmp.append('game_choice4', this.tableData[this.idx].game_choice4);
+            // tmp.append('game_answer', this.tableData[this.idx].game_answer);
+            console.log('发送的修改信息:',tmp);
+            console.log(tmp['game_question']);
+            axios.post('/admin/gameinfo/update', tmp).then(
+                res => {
+                    console.log(res);
+                    if (res.data.code === 200) {
+                        this.$set(this.tableData, this.idx, this.form);
+                        this.$message.success('修改成功');
+                        // this.$message.success(`修改第 ${this.idx + 1} 行成功`);
+                        console.log('修改该题目信息成功');
+                        this.getData();
+                    } else {
+                        this.getData();
+                        this.$message.error(res.data.message);
+                        this.$router.push('/questionmanage');
+                    }
+                }
+            ).catch(err => {
+                this.getData();
+                this.$message.error('网络请求失败');
+            });
+
             // this.$set(this.tableData, this.idx, this.form);
         },
         // 分页导航

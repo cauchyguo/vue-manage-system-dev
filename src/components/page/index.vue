@@ -158,9 +158,35 @@
                         </el-card>
                     </el-col>
                 </el-row>
-                <el-row :gutter="20" class="mgb20">
+                <el-row :gutter="10" class="mgb20">
                     <el-card shadow="hover" style="height:562px;align-content: center">
-                        <div class="grid-content-chart1 bg-purple" id="chart1" ></div>
+                        <el-col :span="15">
+                            <div class="grid-content-chart1 bg-purple" id="chart1" ></div>
+                        </el-col>
+                        <el-col :span="3">
+                            <el-row>
+                                <div><span>起始时间</span></div>
+                                <el-date-picker
+                                    name="开始时间"
+                                    type="date"
+                                    placeholder="选择日期"
+                                    v-model="date.date1"
+                                    value-format="yyyy-MM-dd"
+                                    style="width: 150px;"
+                                ></el-date-picker>
+                            </el-row>
+                            <el-row>
+                                <div><span>结束时间</span></div>
+                                <el-date-picker
+                                    type="date"
+                                    placeholder="选择日期"
+                                    v-model="date.date2"
+                                    value-format="yyyy-MM-dd"
+                                    style="width: 150px;"
+                                ></el-date-picker>
+                            </el-row>
+                            <el-button type="primary" icon="el-icon-time" @click="getdata">确认</el-button>
+                        </el-col>
                     </el-card>
                 </el-row>
 
@@ -209,7 +235,10 @@ export default {
             top_vocal_list_today: [],
             user_rank_by_playnum: [],
             user_rank_by_score: [],
-
+            date:{
+                date1:'2023-03-20',
+                date2:'2023-03-29',
+            },
             options2: {
                 type: 'line',
                 title: {
@@ -262,42 +291,63 @@ export default {
     methods: {
 
         async getdata() {
-            axios.get('/admin/index').then(
-                res => {
-                    console.log(res.data.data);
-                    this.obj = res.data.data;
-
-                    this.user_today = this.obj.user_today;
-                    this.new_user_today = this.obj.new_user_today;
-                    this.old_user_today = this.obj.old_user_today
-                    this.gb_classify_today = this.obj.gb_classify_today;
-                    this.game_play_today = this.obj.game_play_today;
-                    this.top_words_list_today= this.obj.top_info_today.top_words_list_today;
-                    this.top_picture_list_today= this.obj.top_info_today.top_picture_list_today;
-                    this.top_vocal_list_today= this.obj.top_info_today.top_vocal_list_today;
-                    this.user_rank_by_playnum = this.obj.user_rank.user_rank_by_playnum;
-                    this.user_rank_by_score = this.obj.user_rank.user_rank_by_score;
-
-                    //
-
-                    this.initChart1(this.obj.user_login_by_week,this.obj.user_game_by_week);
+            // let time = new FormData();
+            // time.append('date1',this.date1)
+            // time.append('date2',this.date2)
+            if (this.date.date1 < this.date.date2) {
+                console.log('时间准确');
+                axios.get('/admin/index', {
+                    params:{
+                        date1: this.date.date1,
+                        date2: this.date.date2,
+                    }
+                }).then(
+                    res => {
+                        console.log(this.date.date1);
+                        console.log(this.date.date2);
 
 
-                    // this.options2.datasets
+                        // console.log('发送数据', time);
+                        console.log('接收数据',res.data.data);
+                        this.obj = res.data.data;
 
-                }
-            ).catch(err =>{
-                this.$message.error('网络失败');
+                        this.user_today = this.obj.user_today;
+                        this.new_user_today = this.obj.new_user_today;
+                        this.old_user_today = this.obj.old_user_today
+                        this.gb_classify_today = this.obj.gb_classify_today;
+                        this.game_play_today = this.obj.game_play_today;
+                        this.top_words_list_today= this.obj.top_info_today.top_words_list_today;
+                        this.top_picture_list_today= this.obj.top_info_today.top_picture_list_today;
+                        this.top_vocal_list_today= this.obj.top_info_today.top_vocal_list_today;
+                        this.user_rank_by_playnum = this.obj.user_rank.user_rank_by_playnum;
+                        this.user_rank_by_score = this.obj.user_rank.user_rank_by_score;
+                        console.log('user_rank_by_playnum:', this.user_rank_by_playnum);
+                        console.log('user_rank_by_score:', this.user_rank_by_score);
 
-            })
+
+                        //
+
+                        this.initChart1(this.obj.user_login_by_week,this.obj.user_game_by_week);
+
+
+                        // this.options2.datasets
+
+                    }
+                ).catch(err =>{
+                    this.$message.error('网络失败');
+
+                })
+            } else {
+                console.log('时间不对');
+                this.$message.error('时间错误');
+            }
+
+
         },
-        changeDate() {
-            const now = new Date().getTime();
-            this.data.forEach((item, index) => {
-                const date = new Date(now - (6 - index) * 86400000);
-                item.name = `${date.getFullYear()}/${date.getMonth() + 1}/${date.getDate()}`;
-            });
-        },
+        // changeDate() {
+        //     this.getData();
+        //
+        // },
         initChart1(user_login_by_week,user_game_by_week) {
             this.option1 = {
                 title:{
@@ -311,7 +361,7 @@ export default {
                 },
                 xAxis: {
                     // type: 'value',
-                    data: ['周一', '周二', '周三', '周四', '周五','周六','周日'],
+                    data: Object.keys(user_login_by_week),
                 },
                 yAxis: {},
                 series: [
@@ -324,7 +374,7 @@ export default {
                         },
                         name: '用户使用人数',
                         type: 'line',
-                        data: user_login_by_week,
+                        data: Object.values(user_login_by_week),
                     },
                     {
                         label:{
@@ -335,7 +385,7 @@ export default {
                         },
                         name: '答题人数',
                         type: 'line',
-                        data: user_game_by_week,
+                        data: Object.values(user_game_by_week),
                     },
                 ]
             };
@@ -420,7 +470,7 @@ export default {
 .grid-content-chart1 {
     align-content: center;
     height: 450px;
-    width: 600px;
+    width: 500px;
 }
 
 .grid-con-1 .grid-con-icon {

@@ -59,7 +59,7 @@ export default {
                     // console.log(tmp);
                     admin_user_data.append('admin_name', this.param.username);
                     admin_user_data.append('password',tmp)
-                    console.log(admin_user_data);
+                    console.log('发送数据',admin_user_data);
 
                     axios.post('/admin/login',admin_user_data).then(
                         res => {

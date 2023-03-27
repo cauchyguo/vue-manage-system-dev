@@ -3,7 +3,7 @@
         <div class="crumbs">
             <el-breadcrumb separator="/">
                 <el-breadcrumb-item>
-                    <i class="el-icon-lx-cascades"></i> 垃圾数据集
+                    <i class="el-icon-lx-cascades"></i> 用户管理
                 </el-breadcrumb-item>
             </el-breadcrumb>
         </div>
@@ -38,13 +38,13 @@
                 <el-table-column prop="gb_classify_nums" label="识别次数" width="80" align="center"></el-table-column>
                 <el-table-column prop="game_play_nums" label="答题次数" width="80" align="center"></el-table-column>
                 <el-table-column prop="accurate" label="答题正确率" width="100" align="center"></el-table-column>
-                <el-table-column label="状态" align="center">
-                    <template slot-scope="scope">
-                        <el-tag
-                            :type="scope.row.state==='成功'?'success':(scope.row.state==='失败'?'danger':'')"
-                        >{{scope.row.state}}</el-tag>
-                    </template>
-                </el-table-column>
+<!--                <el-table-column label="状态" align="center">-->
+<!--                    <template slot-scope="scope">-->
+<!--                        <el-tag-->
+<!--                            :type="scope.row.state==='成功'?'success':(scope.row.state==='失败'?'danger':'')"-->
+<!--                        >{{scope.row.state}}</el-tag>-->
+<!--                    </template>-->
+<!--                </el-table-column>-->
 
 
                 <el-table-column label="操作" width="180" align="center">
@@ -157,13 +157,15 @@ export default {
         // 触发搜索按钮
         handleSearch() {
             let tmp = new FormData();
-            tmp.append('user_name', query.name);
-            axios.get('/admin/users/search',tmp).then(
+            axios.get('/admin/users/search', {
+                params:{
+                    user_name: query.name,
+                }
+            }).then(
                 res => {
                     console.log("接受到的数据为：");
                     console.log(res.data.data);
                     this.tableData = res.data.data.users_list;
-
                 }
             ).catch(err => {
                 this.$message.error('网络请求失败');
@@ -234,23 +236,23 @@ export default {
         // 保存编辑
         saveEdit() {
             this.editVisible = false;
-            this.$set(this.tableData, this.idx, this.form);
             let tmp = new FormData();
-            tmp.append('user_name', this.tableData[this.idx].user_name);
-            tmp.append('open_id', this.tableData[this.idx].open_id);
-            tmp.append('sex', this.tableData[this.idx].sex);
-            tmp.append('background', this.tableData[this.idx].background);
-            tmp.append('school', this.tableData[this.idx].school);
-            tmp.append('email', this.tableData[this.idx].email);
-            tmp.append('age', this.tableData[this.idx].age);
-            tmp.append('address', this.tableData[this.idx].address);
+            tmp.append('user_name', this.form.user_name);
+            tmp.append('open_id', this.form.open_id);
+            tmp.append('sex', this.form.sex);
+            tmp.append('background', this.form.background);
+            tmp.append('school', this.form.school);
+            tmp.append('email', this.form.email);
+            tmp.append('age', this.form.age);
+            tmp.append('address', this.form.address);
             console.log(tmp);
             axios.post('/admin/users/update', tmp).then(
                 res => {
                     console.log(res);
                     if (res.data.code === 200) {
+                        this.$set(this.tableData, this.idx, this.form);
                         this.$message.success('修改成功');
-                        this.$message.success(`修改第 ${this.idx + 1} 行成功`);
+                        // this.$message.success(`修改第 ${this.idx + 1} 行成功`);
                         console.log('修改该用户信息成功');
                     } else {
                         this.getData();

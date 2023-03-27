@@ -22,8 +22,32 @@
         </div>
         <div class="container">
             <el-row :gutter="20">
-                <el-col :span="12">
+                <el-col :span="9">
                     <div class="grid-content-bottom bg-purple" id="chart4" ></div>
+                </el-col>
+                <el-col :span="3">
+                    <el-row>
+                        <div><span>起始时间</span></div>
+                        <el-date-picker
+                            name="开始时间"
+                            type="date"
+                            placeholder="选择日期"
+                            v-model="date.date1"
+                            value-format="yyyy-MM-dd"
+                            style="width: 150px;"
+                        ></el-date-picker>
+                    </el-row>
+                    <el-row>
+                        <div><span>结束时间</span></div>
+                        <el-date-picker
+                            type="date"
+                            placeholder="选择日期"
+                            v-model="date.date2"
+                            value-format="yyyy-MM-dd"
+                            style="width: 150px;"
+                        ></el-date-picker>
+                    </el-row>
+                    <el-button type="primary" icon="el-icon-time" @click="getData">确认</el-button>
                 </el-col>
                 <el-col :span="12">
                     <div class="grid-content-bottom bg-purple" id="chart5" ></div>
@@ -40,12 +64,18 @@ import * as echarts from 'echarts';
 
 export default {
     name: 'basecharts',
+
     created() {
         console.log("用户vue页面创建中");
         // this.getData();
     },
     data() {
         return {
+            date: {
+                date1:'2023-03-20',
+                date2:'2023-03-29',
+            },
+
             // chart1
             chartDom1: "",
             mychart1: "",
@@ -98,6 +128,8 @@ export default {
     },
     methods:{
         initChart1(male=80,female=500) {
+            console.log('图表1初始化成功');
+
             this.option1 = {
                 title:{
                     text: '用户性别比例',
@@ -145,6 +177,8 @@ export default {
             // this.mychart1.resize();
         },
         initChart2(values) {
+            console.log('图表3初始化成功');
+
             this.option2 = {
                 title:{
                     text: '用户学历分布',
@@ -248,6 +282,8 @@ export default {
         },
         // },
         initChart3(male_list,female_list) {
+            console.log('图表2初始化成功');
+
             this.option3 = {
                 title:{
                     text: '用户年龄分布',
@@ -298,6 +334,7 @@ export default {
 
         },
         initChart4(online_data) {
+            console.log('图表5初始化成功');
             this.option4 = {
                 title:{
                     text: '用户在线数据',
@@ -350,49 +387,9 @@ export default {
                 ]
             };
             this.option4 && this.mychart4.setOption(this.option4);
-            // this.option4 = {
-            //     title:{
-            //         text: '用户上周使用情况',
-            //         left: 'center',
-            //     },
-            //     legend:{
-            //         left: "center",
-            //         top: "bottom",
-            //         data: ['用户使用人数', '答题人数'],
-            //     },
-            //     xAxis: {
-            //         // type: 'value',
-            //         data: ['周一', '周二', '周三', '周四', '周五','周六','周日'],
-            //     },
-            //     yAxis: {},
-            //     series: [
-            //         {
-            //             label:{
-            //                 normal:{
-            //                     show: true,
-            //                     position: 'top',
-            //                 }
-            //             },
-            //             name: '用户使用人数',
-            //             type: 'line',
-            //             data: user_login_by_week,
-            //         },
-            //         {
-            //             label:{
-            //                 normal:{
-            //                     show: true,
-            //                     position: 'bottom',
-            //                 }
-            //             },
-            //             name: '答题人数',
-            //             type: 'line',
-            //             data: user_game_by_week,
-            //         },
-            //     ]
-            // };
-            // this.option4 && this.mychart4.setOption(this.option4);
         },
         initChart5(top_city_dict) {
+            console.log('图表5初始化成功');
             this.option5 = {
                 title:{
                     text: '用户地区分布',
@@ -425,25 +422,39 @@ export default {
 
         async getData() {
             console.log("开始调用getData()");
-            axios.get('/admin/users').then(
-                res => {
-                    console.log("开始请求用户数据");
-                    console.log(res.data.data);
-                    console.log("请求数据成功");
-                    this.obj = res.data.data;
-                    let user_online_list = this.obj.user_online_list
-                    console.log(this.obj);
-                    this.initChart1(this.obj.population.male_number, this.obj.population.female_number);
-                    this.initChart2(this.obj.background);
-                    this.initChart3(this.obj.age_dist.male_age_dist, this.obj.age_dist.female_age_dist);
-                    this.initChart4(user_online_list);
-                    this.initChart5(this.obj.top_user_dist);
 
-                }
-            ).catch(err => {
-                this.$message.error('网络失败');
+            if (this.date.date1 <= this.date.date2) {
+                console.log('时间准确');
+                axios.get('/admin/users',{
+                    params:{
+                        date1: this.date.date1,
+                        date2: this.date.date2,
+                    }
+                }).then(
+                    res => {
+                        console.log("开始请求用户数据");
+                        console.log(res.data.data);
+                        console.log("请求数据成功");
+                        this.obj = res.data.data;
+                        let user_online_list = this.obj.user_online_list
+                        console.log(this.obj);
+                        this.initChart1(this.obj.population.male_number, this.obj.population.female_number);
+                        this.initChart2(this.obj.background);
+                        this.initChart3(this.obj.age_dist.male_age_dist, this.obj.age_dist.female_age_dist);
+                        this.initChart4(user_online_list);
+                        this.initChart5(this.obj.top_user_dist);
 
-            });
+                    }
+                ).catch(err => {
+                    this.$message.error('网络失败');
+
+                });
+
+            } else {
+                this.$message.error('时间错误');
+                console.log('时间不对');
+            }
+
         },
     }
 };

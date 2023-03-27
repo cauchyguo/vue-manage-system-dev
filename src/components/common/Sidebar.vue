@@ -77,7 +77,11 @@ export default {
                         {
                             index: 'setting',
                             title: '答题情况'
-                        }
+                        },
+                        {
+                            index: 'questionmanage',
+                            title: '题库管理'
+                        },
                     ]
                 },
                 {
