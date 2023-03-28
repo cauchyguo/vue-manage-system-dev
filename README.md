@@ -20,8 +20,8 @@
 ## 安装步骤
 
 ```
-git clone https://github.com/cauchyguo/vue-manage-system-dev.git      // 把模板下载到本地
-cd vue-manage-system-dev    // 进入模板目录
+git clone https://github.com/cauchyguo/vue-manage-system-dev.git      // 把代码仓库下载到本地
+cd vue-manage-system-dev    // 进入仓库目录
 npm install         // 安装项目依赖，等待安装完成之后，安装失败可用 cnpm 或 yarn
 
 // 开启服务器，浏览器访问 http://localhost:8080
