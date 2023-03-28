@@ -1,14 +1,23 @@
 <template>
     <div>
-        <el-col>
-            <el-card>
-                <
-            </el-card>
-        </el-col>
-        <el-col>
-            <el-row></el-row>
-            <el-row></el-row>
-        </el-col>
+        <el-row >
+            <el-col :span="8">
+                <div>
+                    <el-card>
+
+                    </el-card>
+                </div>
+
+            </el-col>
+            <el-col :span="8">
+                <el-row :gutter="10">
+                    <div class="grid-content bg-purple" id="chart1" ></div>
+                </el-row>
+                <el-row :gutter="10">
+                    <div class="grid-content bg-purple" id="chart2" ></div>
+                </el-row>
+            </el-col>
+        </el-row>
     </div>
 </template>
 
@@ -20,9 +29,9 @@ import axios from "axios";
 import * as echarts from "echarts";
 export default {
     name: 'dashboard',
-    created() {
-        this.getdata();
-    },
+    // created() {
+    //     this.getdata();
+    // },
     data() {
         return {
 
@@ -32,54 +41,50 @@ export default {
             option1: "",
 
             // // chart2
-            // chartDom2: "",
-            // mychart2: "",
-            // option2: "",
-            //
-            // // chart3
-            // chartDom3: "",
-            // mychart3: "",
-            // option3: "",
+            chartDom2: "",
+            mychart2: "",
+            option2: "",
 
             name: localStorage.getItem('ms_username'),
-            user_today: 0,
-            new_user_today: 0,
-            old_user_today: 0,
-            gb_classify_today: 0,
-            game_play_today: 0,
-            top_words_list_today: [],
-            top_picture_list_today: [],
-            top_vocal_list_today: [],
+
+            accuracy: "0%",
+            answer_num: {},
+            game_error: {},
+            play_game_user_num: 0,
+            play_num: 0,
+
             user_rank_by_playnum: [],
             user_rank_by_score: [],
+
+
             date:{
                 date1:'2023-03-20',
                 date2:'2023-03-29',
             },
-            options2: {
-                type: 'line',
-                title: {
-                    text: '上周用户登录人数'
-                },
-                yEqual: 6,
-                labels: ['周一', '周二', '周三', '周四', '周五','周六','周日'],
-                datasets: [
-                    {
-                        label: '在线人数',
-                        data: [234, 278, 270, 190, 230,400,599]
-                    },
-                    {
-                        label: '新用户人数',
-                        data: [164, 178, 150, 135, 160, 300, 259],
-
-                    },
-                    {
-                        label: '老用户人数',
-                        data: [70, 100, 120, 55, 70, 100, 340],
-
-                    }
-                ]
-            }
+            // options2: {
+            //     type: 'line',
+            //     title: {
+            //         text: '上周用户登录人数'
+            //     },
+            //     yEqual: 6,
+            //     labels: ['周一', '周二', '周三', '周四', '周五','周六','周日'],
+            //     datasets: [
+            //         {
+            //             label: '在线人数',
+            //             data: [234, 278, 270, 190, 230,400,599]
+            //         },
+            //         {
+            //             label: '新用户人数',
+            //             data: [164, 178, 150, 135, 160, 300, 259],
+            //
+            //         },
+            //         {
+            //             label: '老用户人数',
+            //             data: [70, 100, 120, 55, 70, 100, 340],
+            //
+            //         }
+            //     ]
+            // }
         };
     },
     components: {
@@ -95,12 +100,11 @@ export default {
         this.chartDom1 = document.getElementById('chart1');
         this.mychart1 = echarts.init((this.chartDom1));
 
-        // this.chartDom2 = document.getElementById('chart2');
-        // this.mychart2 = echarts.init((this.chartDom2));
+        this.chartDom2 = document.getElementById('chart2');
+        this.mychart2 = echarts.init((this.chartDom2));
         //
         // this.chartDom3 = document.getElementById('chart3');
         // this.mychart3 = echarts.init((this.chartDom3));
-
         this.getdata();
 
     },
@@ -108,77 +112,70 @@ export default {
     methods: {
 
         async getdata() {
-            // let time = new FormData();
-            // time.append('date1',this.date1)
-            // time.append('date2',this.date2)
-            if (this.date.date1 < this.date.date2) {
-                console.log('时间准确');
-                axios.get('/admin/index', {
-                    params:{
-                        date1: this.date.date1,
-                        date2: this.date.date2,
-                    }
-                }).then(
-                    res => {
-                        console.log(this.date.date1);
-                        console.log(this.date.date2);
-
-
-                        // console.log('发送数据', time);
-                        console.log('接收数据',res.data.data);
-                        this.obj = res.data.data;
-
-                        this.user_today = this.obj.user_today;
-                        this.new_user_today = this.obj.new_user_today;
-                        this.old_user_today = this.obj.old_user_today
-                        this.gb_classify_today = this.obj.gb_classify_today;
-                        this.game_play_today = this.obj.game_play_today;
-                        this.top_words_list_today= this.obj.top_info_today.top_words_list_today;
-                        this.top_picture_list_today= this.obj.top_info_today.top_picture_list_today;
-                        this.top_vocal_list_today= this.obj.top_info_today.top_vocal_list_today;
-                        this.user_rank_by_playnum = this.obj.user_rank.user_rank_by_playnum;
-                        this.user_rank_by_score = this.obj.user_rank.user_rank_by_score;
-                        console.log('user_rank_by_playnum:', this.user_rank_by_playnum);
-                        console.log('user_rank_by_score:', this.user_rank_by_score);
-
-
-                        //
-
-                        this.initChart1(this.obj.user_login_by_week,this.obj.user_game_by_week);
-
-
-                        // this.options2.datasets
-
-                    }
-                ).catch(err =>{
-                    this.$message.error('网络失败');
-
-                })
-            } else {
-                console.log('时间不对');
-                this.$message.error('时间错误');
-            }
-
-
+            axios.get('/admin/playinfo').then(
+                res => {
+                    console.log('接收数据', res.data.data);
+                    let data = res.data.data;
+                    this.accuracy = data.accuracy;
+                    this.answer_num = data.answer_num;
+                    this.game_error = data.game_error;
+                    this.play_game_user_num = data.play_game_user_num;
+                    this.play_num = data.play_num;
+                    this.user_rank_by_playnum = data.user_rank.user_rank_by_playnum;
+                    this.user_rank_by_score = data.user_rank.user_rank_by_score;
+                    this.initChart1();
+                    this.initChart2();
+                }
+            ).catch(err => {
+                this.$message.error(err.message);
+            })
         },
-        // changeDate() {
-        //     this.getData();
-        //
-        // },
-        initChart1(user_login_by_week,user_game_by_week) {
+
+        initChart1() {
+            console.log('图表1初始化成功');
             this.option1 = {
                 title:{
-                    text: '用户上周使用情况',
+                    text: '今日答题情况',
                     left: 'center',
                 },
                 legend:{
                     left: "center",
                     top: "bottom",
-                    data: ['用户使用人数', '答题人数'],
+                    data: ['今日答题人数'],
                 },
                 xAxis: {
                     // type: 'value',
-                    data: Object.keys(user_login_by_week),
+                    data: Object.keys(this.answer_num),
+
+                },
+                yAxis: {},
+                series: [
+                    {
+                        label:{
+                            normal:{
+                                show: true,
+                                position: 'bottom',
+                            }
+                        },
+                        name: '答题人数',
+                        type: 'line',
+                        data: Object.values(this.answer_num),
+                    },
+                ]
+            };
+            this.option1 && this.mychart1.setOption(this.option1);
+        },
+
+        initChart2() {
+            console.log('图表2初始化成功');
+            this.option5 = {
+                title:{
+                    text: '题目错误率Top10',
+                    left: 'center',
+                },
+                xAxis: {
+                    // type: 'value',
+                    data: Object.keys(this.game_error),
                 },
                 yAxis: {},
                 series: [
@@ -189,25 +186,14 @@ export default {
                                 position: 'top',
                             }
                         },
-                        name: '用户使用人数',
-                        type: 'line',
-                        data: Object.values(user_login_by_week),
-                    },
-                    {
-                        label:{
-                            normal:{
-                                show: true,
-                                position: 'bottom',
-                            }
-                        },
-                        name: '答题人数',
-                        type: 'line',
-                        data: Object.values(user_game_by_week),
+                        type: 'bar',
+                        data: Object.values(this.game_error),
                     },
                 ]
             };
-            this.option1 && this.mychart1.setOption(this.option1);
+            this.option2 && this.mychart2.setOption(this.option2);
         },
+
     }
 };
 </script>
@@ -254,41 +240,12 @@ export default {
 .grid-content {
     display: flex;
     align-items: center;
-    height: 100px;
-}
-
-.grid-cont-right {
-    flex: 1;
-    text-align: center;
-    font-size: 14px;
-    color: #999;
-}
-
-.grid-num1 {
-    font-size: 18px;
-    /*font-weight: bold;*/
-    align-content: flex-end;
-}
-
-.grid-num {
-    font-size: 30px;
-    font-weight: bold;
-}
-
-.grid-con-icon {
-    font-size: 50px;
-    width: 100px;
-    height: 100px;
-    text-align: center;
-    line-height: 100px;
-    color: #fff;
-}
-
-.grid-content-chart1 {
-    align-content: center;
-    height: 450px;
+    height: 500px;
     width: 500px;
 }
+
+
+
 
 .grid-con-1 .grid-con-icon {
     background: rgb(45, 140, 240);

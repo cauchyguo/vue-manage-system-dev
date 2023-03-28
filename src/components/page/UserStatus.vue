@@ -37,6 +37,7 @@
                             style="width: 150px;"
                         ></el-date-picker>
                     </el-row>
+                    <span></span>
                     <el-row>
                         <div><span>结束时间</span></div>
                         <el-date-picker
@@ -415,10 +416,10 @@ export default {
             };
             this.option5 && this.mychart5.setOption(this.option5);
         },
-        handleClick(tab, event) {
-            console.log(tab, event);
-            this.activeName = tab;
-        },
+        // handleClick(tab, event) {
+        //     console.log(tab, event);
+        //     this.activeName = tab;
+        // },
 
         async getData() {
             console.log("开始调用getData()");

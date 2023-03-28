@@ -15,13 +15,13 @@
                     class="handle-del mr10"
                     @click="delAllSelection"
                 >批量删除</el-button>
-                <el-select v-model="query.address" placeholder="垃圾类别" class="handle-select mr10">
+                <el-select v-model="" placeholder="垃圾类别" class="handle-select mr10">
                     <el-option key="1" label="可回收垃圾" value="可回收垃圾"></el-option>
                     <el-option key="2" label="有害垃圾" value="有害垃圾"></el-option>
                     <el-option key="3" label="厨余垃圾" value="厨余垃圾"></el-option>
                     <el-option key="4" label="其他垃圾" value="其他垃圾"></el-option>
                 </el-select>
-                <el-input v-model="query.name" placeholder="垃圾名称" class="handle-input mr10"></el-input>
+                <el-input v-model="garbage_class" placeholder="垃圾名称" class="handle-input mr10"></el-input>
                 <el-button type="primary" icon="el-icon-search" @click="handleSearch">搜索</el-button>
             </div>
             <el-table
@@ -33,30 +33,31 @@
                 @selection-change="handleSelectionChange"
             >
                 <el-table-column type="selection" width="40" align="center"></el-table-column>
-                <el-table-column prop="garbage_id" label="垃圾ID" width="80" align="center"></el-table-column>
+<!--                <el-table-column prop="garbage_id" label="垃圾ID" width="80" align="center"></el-table-column>-->
                 <el-table-column prop="garbage_name" label="垃圾名称"></el-table-column>
                 <el-table-column prop="garbage_class" label="垃圾类别"></el-table-column>
-                <el-table-column prop="search_num" label="注册时间"></el-table-column>
+
+<!--                <el-table-column prop="search_num" label="注册时间"></el-table-column>-->
 <!--                <el-table-column label="账户余额">-->
 <!--                    <template slot-scope="scope">￥{{scope.row.money}}</template>-->
 <!--                </el-table-column>-->
-                <el-table-column label="垃圾图像(查看大图)" align="center">
-                    <template slot-scope="scope">
-                        <el-image
-                            class="table-td-thumb"
-                            :src="scope.row.thumb"
-                            :preview-src-list="[scope.row.thumb]"
-                        ></el-image>
-                    </template>
-                </el-table-column>
+<!--                <el-table-column label="垃圾图像(查看大图)" align="center">-->
+<!--                    <template slot-scope="scope">-->
+<!--                        <el-image-->
+<!--                            class="table-td-thumb"-->
+<!--                            :src="scope.row.thumb"-->
+<!--                            :preview-src-list="[scope.row.thumb]"-->
+<!--                        ></el-image>-->
+<!--                    </template>-->
+<!--                </el-table-column>-->
 <!--                <el-table-column prop="address" label="地址"></el-table-column>-->
-                <el-table-column label="状态" align="center">
-                    <template slot-scope="scope">
-                        <el-tag
-                            :type="scope.row.state==='成功'?'success':(scope.row.state==='失败'?'danger':'')"
-                        >{{scope.row.state}}</el-tag>
-                    </template>
-                </el-table-column>
+<!--                <el-table-column label="状态" align="center">-->
+<!--                    <template slot-scope="scope">-->
+<!--                        <el-tag-->
+<!--                            :type="scope.row.state==='成功'?'success':(scope.row.state==='失败'?'danger':'')"-->
+<!--                        >{{scope.row.state}}</el-tag>-->
+<!--                    </template>-->
+<!--                </el-table-column>-->
 
 
                 <el-table-column label="操作" width="180" align="center">
@@ -112,12 +113,16 @@ export default {
     name: 'basetable',
     data() {
         return {
-            query: {
-                address: '',
-                name: '',
-                pageIndex: 1,
-                pageSize: 10
-            },
+            // query: {
+            //     address: '',
+            //     name: '',
+            //     pageIndex: 1,
+            //     pageSize: 10
+            // },
+            page: null,
+            pages: null,
+            garbage_class: '有害垃圾',
+
             tableData: [],
             multipleSelection: [],
             delList: [],

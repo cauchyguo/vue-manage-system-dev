@@ -278,8 +278,8 @@ export default {
         this.chartDom1 = document.getElementById('chart1');
         this.mychart1 = echarts.init((this.chartDom1));
 
-        // this.chartDom2 = document.getElementById('chart2');
-        // this.mychart2 = echarts.init((this.chartDom2));
+        this.chartDom2 = document.getElementById('chart2');
+        this.mychart2 = echarts.init((this.chartDom2));
         //
         // this.chartDom3 = document.getElementById('chart3');
         // this.mychart3 = echarts.init((this.chartDom3));
@@ -351,7 +351,7 @@ export default {
         initChart1(user_login_by_week,user_game_by_week) {
             this.option1 = {
                 title:{
-                    text: '用户上周使用情况',
+                    text: '用户最近使用情况',
                     left: 'center',
                 },
                 legend:{

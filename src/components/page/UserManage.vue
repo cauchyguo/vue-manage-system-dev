@@ -15,7 +15,7 @@
                     class="handle-del mr10"
                     @click="delAllSelection"
                 >批量删除</el-button>
-                <el-input v-model="query.name" placeholder="用户名称" class="handle-input mr10"></el-input>
+                <el-input v-model="name" placeholder="用户名称" class="handle-input mr10"></el-input>
                 <el-button type="primary" icon="el-icon-search" @click="handleSearch">搜索</el-button>
             </div>
             <el-table
@@ -124,6 +124,7 @@ export default {
                 // pageSize: 10
             },
             // changeindex: null,
+            name: null,
             tableData: [],
             multipleSelection: [],
             delList: [],
@@ -157,15 +158,13 @@ export default {
         // 触发搜索按钮
         handleSearch() {
             let tmp = new FormData();
-            axios.get('/admin/users/search', {
-                params:{
-                    user_name: query.name,
-                }
-            }).then(
+            tmp.append('user_name', this.name);
+            axios.post('/admin/users/search', tmp
+            ).then(
                 res => {
                     console.log("接受到的数据为：");
                     console.log(res.data.data);
-                    this.tableData = res.data.data.users_list;
+                    this.tableData = res.data.data.result;
                 }
             ).catch(err => {
                 this.$message.error('网络请求失败');

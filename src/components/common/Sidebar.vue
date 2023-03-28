@@ -72,10 +72,10 @@ export default {
                         },
                         {
                             index: 'usermanage',
-                            title: '用户数据'
+                            title: '用户管理'
                         },
                         {
-                            index: 'setting',
+                            index: 'questionstatus',
                             title: '答题情况'
                         },
                         {
