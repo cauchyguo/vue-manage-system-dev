@@ -141,7 +141,7 @@
                                 <i class="el-icon-lx-emojifill grid-con-icon"></i>
                                 <div class="grid-cont-right">
                                     <div>今日答题次数</div>
-                                    <div class="grid-num">{{ gb_classify_today }}</div>
+                                    <div class="grid-num">{{ game_play_today}}</div>
                                 </div>
                             </div>
                         </el-card>

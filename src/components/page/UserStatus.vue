@@ -37,7 +37,7 @@
                             style="width: 150px;"
                         ></el-date-picker>
                     </el-row>
-                    <span></span>
+                    <br>
                     <el-row>
                         <div><span>结束时间</span></div>
                         <el-date-picker
@@ -48,6 +48,7 @@
                             style="width: 150px;"
                         ></el-date-picker>
                     </el-row>
+                    <br>
                     <el-button type="primary" icon="el-icon-time" @click="getData">确认</el-button>
                 </el-col>
                 <el-col :span="12">
@@ -227,11 +228,6 @@ export default {
                                 value: values[5],
                                 name: '研究生',
                             },
-                            // {
-                            //     value: values[6],
-                            //     name: '博士',
-                            // },
-
                         ],
                         label:{
                             alignTo: 'edge',
@@ -247,7 +243,7 @@ export default {
                             normal:{
                                 show: true,
                                 formatter: `{d}%`,
-                                color: "#ffffff", //颜色
+                                // color: "#ffffff", //颜色
                                 fontSize: 12, //字体大小
                                 position: "inside", //outside 外部显示  inside 内部显示
                             },
@@ -256,29 +252,6 @@ export default {
                     },
                 ]
             };
-            // this.option2 = {
-            //     title:{
-            //         text: '用户学历分布',
-            //         left: 'center',
-            //     },
-            //     xAxis: {
-            //         // type: 'value',
-            //         data: Object.keys(top_city_dict),
-            //     },
-            //     yAxis: {},
-            //     series: [
-            //         {
-            //             label:{
-            //                 normal:{
-            //                     show: true,
-            //                     position: 'top',
-            //                 }
-            //             },
-            //             type: 'bar',
-            //             data: Object.values(top_city_dict),
-            //         },
-            //     ]
-            // };
             this.option2 && this.mychart2.setOption(this.option2);
         },
         // },
@@ -475,7 +448,7 @@ export default {
 }
 .grid-content-bottom {
     height: 400px;
-    width: 600px;
+    width: 580px;
 }
 
 </style>

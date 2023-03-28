@@ -2,17 +2,28 @@
     <div>
         <el-row >
             <el-col :span="8">
-                <div>
-                    <el-card>
-
-                    </el-card>
-                </div>
-
+                <el-card>
+                    <div>
+                        答题总人数 :{{this.play_game_user_num}}
+                    </div>
+                </el-card>
+                <el-card>
+                    <div>
+                        总答题数 :{{this.play_num}}
+                    </div>
+                </el-card>
+                <el-card>
+                    <div>
+                        答题正确率 :{{this.accuracy}}
+                    </div>
+                </el-card>
             </el-col>
             <el-col :span="8">
                 <el-row :gutter="10">
                     <div class="grid-content bg-purple" id="chart1" ></div>
                 </el-row>
+            </el-col>
+            <el-col :span="8">
                 <el-row :gutter="10">
                     <div class="grid-content bg-purple" id="chart2" ></div>
                 </el-row>
@@ -56,35 +67,10 @@ export default {
             user_rank_by_playnum: [],
             user_rank_by_score: [],
 
-
             date:{
                 date1:'2023-03-20',
                 date2:'2023-03-29',
             },
-            // options2: {
-            //     type: 'line',
-            //     title: {
-            //         text: '上周用户登录人数'
-            //     },
-            //     yEqual: 6,
-            //     labels: ['周一', '周二', '周三', '周四', '周五','周六','周日'],
-            //     datasets: [
-            //         {
-            //             label: '在线人数',
-            //             data: [234, 278, 270, 190, 230,400,599]
-            //         },
-            //         {
-            //             label: '新用户人数',
-            //             data: [164, 178, 150, 135, 160, 300, 259],
-            //
-            //         },
-            //         {
-            //             label: '老用户人数',
-            //             data: [70, 100, 120, 55, 70, 100, 340],
-            //
-            //         }
-            //     ]
-            // }
         };
     },
     components: {
@@ -103,8 +89,6 @@ export default {
         this.chartDom2 = document.getElementById('chart2');
         this.mychart2 = echarts.init((this.chartDom2));
         //
-        // this.chartDom3 = document.getElementById('chart3');
-        // this.mychart3 = echarts.init((this.chartDom3));
         this.getdata();
 
     },
@@ -168,7 +152,8 @@ export default {
 
         initChart2() {
             console.log('图表2初始化成功');
-            this.option5 = {
+            console.log(this.game_error);
+            this.option2 = {
                 title:{
                     text: '题目错误率Top10',
                     left: 'center',
@@ -181,10 +166,13 @@ export default {
                 series: [
                     {
                         label:{
-                            normal:{
+                            normal: {
                                 show: true,
                                 position: 'top',
-                            }
+                                formatter: `{c}%`,
+                                color: "#ffffff", //颜色
+                            },
+
                         },
                         type: 'bar',
                         data: Object.values(this.game_error),

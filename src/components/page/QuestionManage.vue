@@ -15,7 +15,7 @@
                     class="handle-del mr10"
                     @click="delAllSelection"
                 >批量删除</el-button>
-                <el-input v-model="query.name" placeholder="题库id" class="handle-input mr10"></el-input>
+                <el-input v-model="searchid" placeholder="题库id" class="handle-input mr10"></el-input>
                 <el-button type="primary" icon="el-icon-search" @click="handleSearch">搜索</el-button>
                 <el-button type="primary" icon="el-icon-search" @click="handleNew">新增题目</el-button>
             </div>
@@ -158,6 +158,7 @@ export default {
                 // pageIndex: 1,
                 // pageSize: 10
             },
+            searchid: null,
             // changeindex: null,
             tableData: [],
             multipleSelection: [],
@@ -194,13 +195,20 @@ export default {
         // 触发搜索按钮
         handleSearch() {
             let tmp = new FormData();
-            tmp.append('user_name', query.name);
-            axios.get('/admin/users/search',tmp).then(
+            tmp.append('game_info_id', this.searchid);
+            axios.post('/admin/gameinfo/get',tmp).then(
                 res => {
-                    console.log("接受到的数据为：");
-                    console.log(res.data.data);
-                    this.tableData = res.data.data.users_list;
-
+                    if (res.data.code===200){
+                        console.log("接受到的数据为：");
+                        console.log(res);
+                        console.log(res.data.data);
+                        this.tableData = [
+                            res.data.data.result,
+                        ];
+                    }else {
+                        this.$message.warning(res.data.message);
+                        console.log("失败")
+                    }
                 }
             ).catch(err => {
                 this.$message.error('网络请求失败');
@@ -325,14 +333,6 @@ export default {
             tmp.append('game_choice3', this.form.game_choice3);
             tmp.append('game_choice4', this.form.game_choice4);
             tmp.append('game_answer', this.form.game_answer);
-            // tmp.append('game_id', this.tableData[this.idx].game_id);
-            // tmp.append('game_type', this.tableData[this.idx].game_type);
-            // tmp.append('game_question', this.tableData[this.idx].game_question);
-            // tmp.append('game_choice1', this.tableData[this.idx].game_choice1);
-            // tmp.append('game_choice2', this.tableData[this.idx].game_choice2);
-            // tmp.append('game_choice3', this.tableData[this.idx].game_choice3);
-            // tmp.append('game_choice4', this.tableData[this.idx].game_choice4);
-            // tmp.append('game_answer', this.tableData[this.idx].game_answer);
             console.log('发送的修改信息:',tmp);
             console.log(tmp['game_question']);
             axios.post('/admin/gameinfo/update', tmp).then(
